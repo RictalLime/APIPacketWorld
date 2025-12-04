@@ -4,9 +4,9 @@
 
 <mapper namespace="cliente">
 
-    <select id="obtener-clientes" resultType="pojo.Cliente">
+    <select id="obtenerClientes" resultType="pojo.Cliente">
         SELECT idCliente, nombre, apellidoPaterno, apellidoMaterno, calle, numeroDeCasa, colonia, codigoPostal, ciudad, estado, telefono, correo
-        FROM cliente
+        FROM cliente;
     </select>
     
     <select id="obtenerClientesPorNombre" resultType="pojo.Cliente">

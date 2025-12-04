@@ -22,7 +22,7 @@ public class ClienteImp {
         List<Cliente> respuesta = null;
         if(conexionBD !=null){
             try {
-                respuesta = conexionBD.selectList("cliente.obtener-clientes");
+                respuesta = conexionBD.selectList("cliente.obtenerClientes");
             } catch (Exception e) {
                 
             }
