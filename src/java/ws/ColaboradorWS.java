@@ -27,6 +27,7 @@ import dto.Mensaje;
 @Path("colaborador")
 public class ColaboradorWS {
     
+    //http://localhost:8095/packet-world/api/colaborador/obtener-colaboradores
     @Path("obtener-colaboradores")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
