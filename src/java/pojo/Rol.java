@@ -5,10 +5,7 @@
  */
 package pojo;
 
-/**
- *
- * @author Daniel García Jácome
- */
+
 public class Rol {
     private Integer idRol;
     private String nombre;
