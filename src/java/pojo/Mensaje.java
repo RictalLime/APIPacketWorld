@@ -5,10 +5,7 @@
  */
 package pojo;
 
-/**
- *
- * @author juanl
- */
+
 public class Mensaje {
     private boolean error;
     private String mensaje;

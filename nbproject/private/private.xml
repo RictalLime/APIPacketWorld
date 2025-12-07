@@ -2,6 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/MyBatisUtil.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/WSRol.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/pojo/Mensaje.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/ImpRol.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/mappers/RolMapper.xml</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/MyBatisConfig.xml</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/pojo/Rol.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/Cors.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/ApplicationConfig.java</file>
+        </group>
     </open-files>
 </project-private>
