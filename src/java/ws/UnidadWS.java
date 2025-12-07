@@ -30,7 +30,7 @@ import pojo.Unidad;
 
 @Path("unidad")
 
-public class WSUnidad {
+public class UnidadWS {
     
      @Context
     private UriInfo context;

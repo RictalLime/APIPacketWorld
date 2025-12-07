@@ -30,8 +30,8 @@ public class ApplicationConfig extends Application {
         resources.add(ws.ColaboradorWS.class);
         resources.add(ws.ConductorAsignadoWS.class);
         resources.add(ws.Cors.class);
-        resources.add(ws.WSRol.class);
-        resources.add(ws.WSUnidad.class);
+        resources.add(ws.RolWS.class);
+        resources.add(ws.UnidadWS.class);
 
      }
 }
