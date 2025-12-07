@@ -7,7 +7,7 @@ package dominio;
 
 import java.util.List;
 import mybatis.MyBatisUtil;
-import pojo.Mensaje;
+import dto.Mensaje;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Rol;
 
