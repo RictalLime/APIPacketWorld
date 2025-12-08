@@ -2,7 +2,7 @@ package pojo;
 
 /**
  *
- * @author juanl
+ * @author Angel2
  */
 public class EstadoUnidad {
     private Integer idEstadoUnidad;

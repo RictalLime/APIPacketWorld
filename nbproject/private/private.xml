@@ -4,6 +4,24 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/RolWS.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/ClienteImp.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/ColaboradorImp.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/Colaborador.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/ClienteMapper.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/Unidad.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/TipoUnidad.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/HistorialDeEnvio.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/HistorialDeEnvioImp.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/MyBatisUtil.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/HistorialDeEnvioMapper.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/ConductorAsignado.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/EstadoDeEnvio.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/EstadoDeEnvioMapper.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/EstadoDeEnvioImp.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/EstadoUnidad.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/EstadoUnidadMapper.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/EstadoUnidadImp.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/RespuestaColaborador.java</file>
         </group>
     </open-files>
 </project-private>
