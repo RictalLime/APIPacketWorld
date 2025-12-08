@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.HistorialDeEnvioMapper">
+
+    <!-- INSERTAR un nuevo registro en el historial -->
+    <!-- Se usa cuando se actualiza el estatus de un envío -->
+    <insert id="registrarCambioEstatus" parameterType="pojo.HistorialDeEnvio">
+        INSERT INTO HistorialDeEnvio 
+            (No_guia, NoPersonal, Motivo, EstatusNuevo, FechaCambio)
+        VALUES 
+            (#{noGuia}, #{noPersonal}, #{motivo}, #{estatusNuevo}, NOW());
+    </insert>
+
+    <!-- CONSULTAR el historial de un envío específico por su número de guía -->
+    <!-- Se ordena por fecha descendente para ver lo más reciente primero -->
+    <select id="obtenerHistorialPorEnvio" resultType="pojo.HistorialDeEnvio" parameterType="int">
+        SELECT 
+            Id_historialDeEnvio AS idHistorialDeEnvio,
+            No_guia AS noGuia,
+            NoPersonal AS noPersonal,
+            Motivo AS motivo,
+            EstatusNuevo AS estatusNuevo,
+            DATE_FORMAT(FechaCambio, '%Y-%m-%d %H:%i:%s') AS fechaCambio
+        FROM HistorialDeEnvio
+        WHERE No_guia = #{noGuia}
+        ORDER BY FechaCambio DESC;
+    </select>
+
+</mapper>
