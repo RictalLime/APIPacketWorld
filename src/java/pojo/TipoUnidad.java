@@ -5,10 +5,7 @@
  */
 package pojo;
 
-/**
- *
- * @author Daniel García Jácome
- */
+
 public class TipoUnidad {
     private Integer idTipoUnidad;
     private String nombre;

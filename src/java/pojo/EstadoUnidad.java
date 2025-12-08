@@ -1,9 +1,6 @@
 package pojo;
 
-/**
- *
- * @author juanl
- */
+
 public class EstadoUnidad {
     private Integer idEstadoUnidad;
     private String nombre;

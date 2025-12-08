@@ -18,13 +18,13 @@ import pojo.Rol;
 
 
 @Path("rol")
-public class WSRol {
+public class  RolWS {
     
      @Context
     private UriInfo context;
     
     
-     public WSRol(){
+     public RolWS(){
      }
      
      @Path("obtener-roles")
