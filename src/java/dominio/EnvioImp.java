@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dominio;
 
+import Utilidades.Constantes; // Importando la constante de error de BD
 import java.util.ArrayList;
 import java.util.List;
 import mybatis.MyBatisUtil;
@@ -15,7 +11,10 @@ import dto.Mensaje;
 
 
 public class EnvioImp {
-
+    
+    // ------------------------------------
+    // OBTENER TODOS LOS ENVÍOS
+    // ------------------------------------
     public static List<Envio> obtenerEnvios() {
         List<Envio> listaEnvios = new ArrayList<>();
         SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
@@ -26,15 +25,21 @@ public class EnvioImp {
             } catch (Exception e) {
                 System.err.println("Error al recuperar los envíos: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
-            System.err.println("Por el momento no se puede consultar la información");
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
+            System.err.println(Constantes.MSJ_ERROR_BD);
         }
 
         return listaEnvios;
     }
 
+    // ------------------------------------
+    // OBTENER ENVÍOS POR NÚMERO DE GUÍA
+    // ------------------------------------
     public static List<Envio> obtenerEnviosPorNoGuia(String noGuia) {
         List<Envio> listaEnvios = null;
         SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
@@ -45,15 +50,21 @@ public class EnvioImp {
             } catch (Exception e) {
                 System.err.println("Error al recuperar los envíos: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
-            System.err.println("Por el momento no se puede consultar la información");
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
+            System.err.println(Constantes.MSJ_ERROR_BD);
         }
 
         return listaEnvios;
     }
 
+    // ------------------------------------
+    // REGISTRAR ENVÍO (INSERTAR)
+    // ------------------------------------
     public static Mensaje registrarEnvio(Envio envio) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
@@ -74,16 +85,22 @@ public class EnvioImp {
                 mensaje.setError(true);
                 mensaje.setMensaje("Error al registrar envío: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
             mensaje.setError(true);
-            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
 
         return mensaje;
     }
 
+    // ------------------------------------
+    // EDITAR ENVÍO
+    // ------------------------------------
     public static Mensaje editarEnvio(Envio envio) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
@@ -104,16 +121,22 @@ public class EnvioImp {
                 mensaje.setError(true);
                 mensaje.setMensaje("Error al editar envío: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
             mensaje.setError(true);
-            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
 
         return mensaje;
     }
 
+    // ------------------------------------
+    // ELIMINAR ENVÍO
+    // ------------------------------------
     public static Mensaje eliminarEnvio(int idEnvio) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
@@ -134,16 +157,22 @@ public class EnvioImp {
                 mensaje.setError(true);
                 mensaje.setMensaje("Error al eliminar envío: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
             mensaje.setError(true);
-            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
 
         return mensaje;
     }
 
+    // ------------------------------------
+    // OBTENER ESTADOS DE ENVÍOS
+    // ------------------------------------
     public static List<EstadoDeEnvio> obtenerEstadosDeEnvios() {
         List<EstadoDeEnvio> listaEstados = null;
         SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
@@ -152,17 +181,23 @@ public class EnvioImp {
             try {
                 listaEstados = conexionBD.selectList("envio.getObtenerEstadosDeEnvio");
             } catch (Exception e) {
-                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+                System.err.println("Error al recuperar los estados de envíos: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
-            System.err.println("Por el momento no se puede consultar la información");
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
+            System.err.println(Constantes.MSJ_ERROR_BD);
         }
 
         return listaEstados;
     }
 
+    // ------------------------------------
+    // OBTENER ENVÍOS POR CONDUCTOR
+    // ------------------------------------
     public static List<Envio> obtenerEnviosConductor(int idColaborador) {
         List<Envio> listaEnvios = new ArrayList<>();
         SqlSession conexionDB = mybatis.MyBatisUtil.obtenerConexion();
@@ -174,10 +209,13 @@ public class EnvioImp {
                 System.err.println("Error al recuperar los envíos: " + e.getMessage());
 
             } finally {
-                conexionDB.close();
+                if (conexionDB != null) {
+                    conexionDB.close();
+                }
             }
-        }else{
-            System.out.println("ERROR con el servidor");
+        } else {
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
+            System.err.println(Constantes.MSJ_ERROR_BD);
         }
         return listaEnvios;
     }

@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dominio;
 
-
+import Utilidades.Constantes; // Importando la constante de error de BD
 import java.util.List;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
@@ -14,6 +9,9 @@ import pojo.Paquete;
 
 public class PaqueteImp {
     
+    // ------------------------------------
+    // OBTENER PAQUETES POR ID ENVÍO
+    // ------------------------------------
     public static List<Paquete> obtenerPaquetesPorEnvio(int idEnvio) {
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         List<Paquete> paquetes = null;
@@ -24,15 +22,21 @@ public class PaqueteImp {
             } catch (Exception e) {
                 System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
-            System.err.println("No se pudo establecer conexión con la base de datos");
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
+            System.err.println(Constantes.MSJ_ERROR_BD);
         }
         
         return paquetes;
     }
     
+    // ------------------------------------
+    // OBTENER TODOS LOS PAQUETES
+    // ------------------------------------
     public static List<Paquete> obtenerPaquetes() {
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         List<Paquete> paquetes = null;
@@ -41,17 +45,23 @@ public class PaqueteImp {
             try {
                 paquetes = conexionBD.selectList("paquete.getPaquetes");
             } catch (Exception e) {
-                System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
+                System.err.println("Error al obtener paquetes: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
-            System.err.println("No se pudo establecer conexión con la base de datos");
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
+            System.err.println(Constantes.MSJ_ERROR_BD);
         }
         
         return paquetes;
     }
     
+    // ------------------------------------
+    // OBTENER PAQUETES POR NO. GUÍA
+    // ------------------------------------
     public static List<Paquete> obtenerPaquetesPorNoGuia(String noguia) {
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         List<Paquete> paquetes = null;
@@ -60,18 +70,23 @@ public class PaqueteImp {
             try {
                 paquetes = conexionBD.selectList("paquete.getPaquetePorNoGuia", noguia);
             } catch (Exception e) {
-                System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
+                System.err.println("Error al obtener paquetes por No. Guía: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
-            System.err.println("No se pudo establecer conexión con la base de datos");
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
+            System.err.println(Constantes.MSJ_ERROR_BD);
         }
         
         return paquetes;
     }
     
-    
+    // ------------------------------------
+    // REGISTRAR PAQUETE (INSERTAR)
+    // ------------------------------------
     public static Mensaje registrarPaquete(Paquete paquete) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
@@ -92,16 +107,22 @@ public class PaqueteImp {
                 mensaje.setError(true);
                 mensaje.setMensaje("Error al registrar paquete: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
             mensaje.setError(true);
-            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
         
         return mensaje;
     }
 
+    // ------------------------------------
+    // EDITAR PAQUETE
+    // ------------------------------------
     public static Mensaje editarPaquete(Paquete paquete) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
@@ -122,16 +143,22 @@ public class PaqueteImp {
                 mensaje.setError(true);
                 mensaje.setMensaje("Error al editar paquete: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
             mensaje.setError(true);
-            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
 
         return mensaje;
     }
 
+    // ------------------------------------
+    // ELIMINAR PAQUETE
+    // ------------------------------------
     public static Mensaje eliminarPaquete(int idPaquete) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
@@ -152,11 +179,14 @@ public class PaqueteImp {
                 mensaje.setError(true);
                 mensaje.setMensaje("Error al eliminar paquete: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
+            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
             mensaje.setError(true);
-            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
 
         return mensaje;
