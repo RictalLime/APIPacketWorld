@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.EstadoEnvioMapper">
+
+    <!-- Obtener todos los estados posibles para un envío -->
+    <!-- Asumiendo que tienes una tabla 'EstadoEnvio' o 'CatalogoEstados' -->
+    <!-- Si no tienes tabla, puedes usar SELECT DISTINCT de la tabla envíos o crear la tabla -->
+    <select id="obtenerTodos" resultType="pojo.EstadoDeEnvio">
+        SELECT 
+            idEstadoEnvio, 
+            nombre 
+        FROM EstadoEnvio
+        ORDER BY nombre ASC;
+    </select>
+
+</mapper>

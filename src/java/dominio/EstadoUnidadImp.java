@@ -15,7 +15,7 @@ public class EstadoUnidadImp {
 
     public static List<EstadoUnidad> obtenerEstadosUnidad() {
         List<EstadoUnidad> lista = new ArrayList<>();
-        SqlSession conexion = MyBatisUtil.getSession();
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
 
         if (conexion != null) {
             try {

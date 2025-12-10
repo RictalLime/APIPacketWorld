@@ -22,6 +22,10 @@
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/EstadoUnidadMapper.xml</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/EstadoUnidadImp.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/RespuestaColaborador.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/MyBatisConfig.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/ConductorAsignadoImp.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/nbproject/build-impl.xml</file>
         </group>
     </open-files>
 </project-private>

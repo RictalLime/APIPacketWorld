@@ -15,7 +15,7 @@ public class EstadoDeEnvioImp {
 
     public static List<EstadoDeEnvio> obtenerEstadosEnvio() {
         List<EstadoDeEnvio> lista = new ArrayList<>();
-        SqlSession conexion = MyBatisUtil.getSession();
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
 
         if (conexion != null) {
             try {

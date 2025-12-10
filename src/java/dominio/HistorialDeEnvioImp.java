@@ -17,7 +17,7 @@ public class HistorialDeEnvioImp {
     // Método para registrar un cambio de estatus en la BD
     public static Mensaje registrarCambioEstatus(HistorialDeEnvio historial) {
         Mensaje mensaje = new Mensaje();
-        SqlSession conexion = MyBatisUtil.getSession();
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
 
         if (conexion != null) {
             try {
@@ -46,9 +46,9 @@ public class HistorialDeEnvioImp {
     }
 
     // Método para obtener la lista de historial de un envío específico
-    public static List<HistorialDeEnvio> obtenerHistorial(int noGuia) {
+    public static List<HistorialDeEnvio> obtenerHistorial(String noGuia) {
         List<HistorialDeEnvio> historial = new ArrayList<>();
-        SqlSession conexion = MyBatisUtil.getSession();
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
 
         if (conexion != null) {
             try {

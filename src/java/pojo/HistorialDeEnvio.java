@@ -1,31 +1,27 @@
 package pojo;
 
-/**
- *
- * @author Angel2
- */
-
 public class HistorialDeEnvio {
+    
     private Integer idHistorialDeEnvio;
-    private Integer noGuia;      // Llave foránea hacia Envio
-    private Integer noPersonal;  // Llave foránea hacia Colaborador
+    private String noGuia; // En tu script es VARCHAR(20)
+    private Integer idColaborador; // En tu script es idColaborador, no noPersonal
+    private Integer idEstadoDeEnvio; // ID numérico
+    private String nombreEstado;     // Campo extra para mostrar el texto (JOIN)
     private String motivo;
-    private String estatusNuevo;
-    private String fechaCambio;
+    private String tiempoDeCambio;   // Mapea a columna 'tiempoDeCambio'
 
     public HistorialDeEnvio() {
     }
 
-    public HistorialDeEnvio(Integer idHistorialDeEnvio, Integer noGuia, Integer noPersonal, String motivo, String estatusNuevo, String fechaCambio) {
+    public HistorialDeEnvio(Integer idHistorialDeEnvio, String noGuia, Integer idColaborador, Integer idEstadoDeEnvio, String nombreEstado, String motivo, String tiempoDeCambio) {
         this.idHistorialDeEnvio = idHistorialDeEnvio;
         this.noGuia = noGuia;
-        this.noPersonal = noPersonal;
+        this.idColaborador = idColaborador;
+        this.idEstadoDeEnvio = idEstadoDeEnvio;
+        this.nombreEstado = nombreEstado;
         this.motivo = motivo;
-        this.estatusNuevo = estatusNuevo;
-        this.fechaCambio = fechaCambio;
+        this.tiempoDeCambio = tiempoDeCambio;
     }
-
-    // Getters y Setters
 
     public Integer getIdHistorialDeEnvio() {
         return idHistorialDeEnvio;
@@ -35,20 +31,36 @@ public class HistorialDeEnvio {
         this.idHistorialDeEnvio = idHistorialDeEnvio;
     }
 
-    public Integer getNoGuia() {
+    public String getNoGuia() {
         return noGuia;
     }
 
-    public void setNoGuia(Integer noGuia) {
+    public void setNoGuia(String noGuia) {
         this.noGuia = noGuia;
     }
 
-    public Integer getNoPersonal() {
-        return noPersonal;
+    public Integer getIdColaborador() {
+        return idColaborador;
     }
 
-    public void setNoPersonal(Integer noPersonal) {
-        this.noPersonal = noPersonal;
+    public void setIdColaborador(Integer idColaborador) {
+        this.idColaborador = idColaborador;
+    }
+
+    public Integer getIdEstadoDeEnvio() {
+        return idEstadoDeEnvio;
+    }
+
+    public void setIdEstadoDeEnvio(Integer idEstadoDeEnvio) {
+        this.idEstadoDeEnvio = idEstadoDeEnvio;
+    }
+
+    public String getNombreEstado() {
+        return nombreEstado;
+    }
+
+    public void setNombreEstado(String nombreEstado) {
+        this.nombreEstado = nombreEstado;
     }
 
     public String getMotivo() {
@@ -59,24 +71,11 @@ public class HistorialDeEnvio {
         this.motivo = motivo;
     }
 
-    public String getEstatusNuevo() {
-        return estatusNuevo;
+    public String getTiempoDeCambio() {
+        return tiempoDeCambio;
     }
 
-    public void setEstatusNuevo(String estatusNuevo) {
-        this.estatusNuevo = estatusNuevo;
-    }
-
-    public String getFechaCambio() {
-        return fechaCambio;
-    }
-
-    public void setFechaCambio(String fechaCambio) {
-        this.fechaCambio = fechaCambio;
-    }
-
-    @Override
-    public String toString() {
-        return "HistorialDeEnvio{" + "idHistorialDeEnvio=" + idHistorialDeEnvio + ", noGuia=" + noGuia + ", noPersonal=" + noPersonal + ", motivo=" + motivo + ", estatusNuevo=" + estatusNuevo + ", fechaCambio=" + fechaCambio + '}';
+    public void setTiempoDeCambio(String tiempoDeCambio) {
+        this.tiempoDeCambio = tiempoDeCambio;
     }
 }
