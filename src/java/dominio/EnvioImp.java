@@ -1,6 +1,6 @@
 package dominio;
 
-import Utilidades.Constantes; // Importando la constante de error de BD
+import Utilidades.Constantes;
 import java.util.ArrayList;
 import java.util.List;
 import mybatis.MyBatisUtil;
@@ -21,6 +21,7 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
+                // Consulta actualizada en el XML para usar JOINs
                 listaEnvios = conexionBD.selectList("envio.getObtenerEnvios");
             } catch (Exception e) {
                 System.err.println("Error al recuperar los envíos: " + e.getMessage());
@@ -30,7 +31,6 @@ public class EnvioImp {
                 }
             }
         } else {
-            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
             System.err.println(Constantes.MSJ_ERROR_BD);
         }
 
@@ -54,11 +54,7 @@ public class EnvioImp {
                     conexionBD.close();
                 }
             }
-        } else {
-            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
-            System.err.println(Constantes.MSJ_ERROR_BD);
         }
-
         return listaEnvios;
     }
 
@@ -71,6 +67,7 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
+                // La sentencia INSERT en el XML fue modificada para usar ID de ciudad
                 int resultado = conexionBD.insert("envio.registrar", envio);
                 conexionBD.commit();
 
@@ -90,7 +87,6 @@ public class EnvioImp {
                 }
             }
         } else {
-            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
             mensaje.setError(true);
             mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
@@ -107,6 +103,7 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
+                // La sentencia UPDATE en el XML fue modificada para usar ID de ciudad
                 int resultado = conexionBD.update("envio.editar", envio);
                 conexionBD.commit();
 
@@ -126,7 +123,6 @@ public class EnvioImp {
                 }
             }
         } else {
-            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
             mensaje.setError(true);
             mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
@@ -161,12 +157,7 @@ public class EnvioImp {
                     conexionBD.close();
                 }
             }
-        } else {
-            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
-            mensaje.setError(true);
-            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
-
         return mensaje;
     }
 
@@ -187,11 +178,7 @@ public class EnvioImp {
                     conexionBD.close();
                 }
             }
-        } else {
-            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
-            System.err.println(Constantes.MSJ_ERROR_BD);
         }
-
         return listaEstados;
     }
 
@@ -213,11 +200,7 @@ public class EnvioImp {
                     conexionDB.close();
                 }
             }
-        } else {
-            // USANDO LA CONSTANTE PARA ERROR DE CONEXIÓN
-            System.err.println(Constantes.MSJ_ERROR_BD);
         }
         return listaEnvios;
     }
-
 }
