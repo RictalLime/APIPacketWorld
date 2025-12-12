@@ -203,4 +203,44 @@ public class EnvioImp {
         }
         return listaEnvios;
     }
+    
+    // DENTRO de dominio.EnvioImp.java
+
+// ... (después de obtenerEnviosConductor)
+
+// ------------------------------------
+// ACTUALIZAR ÚNICAMENTE EL ESTADO
+// ------------------------------------
+public static Mensaje actualizarEstadoEnvio(Envio envio) {
+    Mensaje mensaje = new Mensaje();
+    SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+
+    if (conexionBD != null) {
+        try {
+            // Llama al mapper simple: "envio.actualizarEstado"
+            int resultado = conexionBD.update("envio.actualizarEstado", envio); 
+            conexionBD.commit();
+
+            if (resultado > 0) {
+                mensaje.setError(false);
+                mensaje.setMensaje("Estado de Envío actualizado correctamente");
+            } else {
+                mensaje.setError(true);
+                mensaje.setMensaje("No se pudo actualizar el estado (ID de envío no encontrado)");
+            }
+        } catch (Exception e) {
+            conexionBD.rollback(); // Es vital hacer rollback en caso de error
+            mensaje.setError(true);
+            mensaje.setMensaje("Error al actualizar estado: " + e.getMessage());
+        } finally {
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        }
+    } else {
+        mensaje.setError(true);
+        mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
+    }
+    return mensaje;
+}
 }

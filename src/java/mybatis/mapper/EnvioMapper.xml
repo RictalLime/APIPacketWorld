@@ -6,28 +6,28 @@
 
     <sql id="selectEnvioFields">
         SELECT e.idEnvio, e.idCliente, 
-               IFNULL(CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno), 'Cliente Desconocido') AS cliente,
-               
-               e.idOrigenCiudad, e.idDestinoCiudad,  e.origenCalle, e.origenNumero, e.origenColonia, e.origenCodigoPostal, 
-               e.destinoCalle, e.destinoNumero, e.destinoColonia, e.destinoCodigoPostal,
-               cio.nombre AS nombreCiudadOrigen, eso.nombre AS nombreEstadoOrigen, 
-               cid.nombre AS nombreCiudadDestino, esd.nombre AS nombreEstadoDestino,
-               
-               CONCAT(
-                   e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, 
-                   ', CP: ', e.origenCodigoPostal, 
-                   IFNULL(CONCAT(', ', cio.nombre, ', ', eso.nombre), '')
-               ) AS origen,
-               CONCAT(
-                   e.destinoCalle, ', ', e.destinoNumero, ', ', e.destinoColonia, 
-                   ', CP: ', e.destinoCodigoPostal, 
-                   IFNULL(CONCAT(', ', cid.nombre, ', ', esd.nombre), '')
-               ) AS destino,
-               
-               e.noGuia, e.costoDeEnvio, e.idEstadoDeEnvio, 
-               IFNULL(est.nombre, 'Estado Desconocido') AS estadoDeEnvio,
-               e.idColaborador, 
-               IFNULL(CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno), 'Conductor Desconocido') AS colaborador
+                IFNULL(CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno), 'Cliente Desconocido') AS cliente,
+                
+                e.idOrigenCiudad, e.idDestinoCiudad,  e.origenCalle, e.origenNumero, e.origenColonia, e.origenCodigoPostal, 
+                e.destinoCalle, e.destinoNumero, e.destinoColonia, e.destinoCodigoPostal,
+                cio.nombre AS nombreCiudadOrigen, eso.nombre AS nombreEstadoOrigen, 
+                cid.nombre AS nombreCiudadDestino, esd.nombre AS nombreEstadoDestino,
+                
+                CONCAT(
+                    e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, 
+                    ', CP: ', e.origenCodigoPostal, 
+                    IFNULL(CONCAT(', ', cio.nombre, ', ', eso.nombre), '')
+                ) AS origen,
+                CONCAT(
+                    e.destinoCalle, ', ', e.destinoNumero, ', ', e.destinoColonia, 
+                    ', CP: ', e.destinoCodigoPostal, 
+                    IFNULL(CONCAT(', ', cid.nombre, ', ', esd.nombre), '')
+                ) AS destino,
+                
+                e.noGuia, e.costoDeEnvio, e.idEstadoDeEnvio, 
+                IFNULL(est.nombre, 'Estado Desconocido') AS estadoDeEnvio,
+                e.idColaborador, 
+                IFNULL(CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno), 'Conductor Desconocido') AS colaborador
         FROM envio e
         LEFT JOIN cliente c ON e.idCliente = c.idCliente
         LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
@@ -60,9 +60,7 @@
         INSERT INTO envio (
             idCliente, origenCalle, origenNumero, origenColonia, origenCodigoPostal, idOrigenCiudad, destinoCalle, destinoNumero, destinoColonia, destinoCodigoPostal, idDestinoCiudad, noGuia, costoDeEnvio, idEstadoDeEnvio, idColaborador
         ) VALUES (
-            #{idCliente}, #{origenCalle}, #{origenNumero}, #{origenColonia}, #{origenCodigoPostal}, #{idCiudadOrigen}, 
-            #{destinoCalle}, #{destinoNumero}, #{destinoColonia}, #{destinoCodigoPostal}, #{idCiudadDestino}, 
-            #{noGuia}, #{costoDeEnvio}, #{idEstadoDeEnvio}, #{idColaborador}
+            #{idCliente}, #{origenCalle}, #{origenNumero}, #{origenColonia}, #{origenCodigoPostal}, #{idOrigenCiudad},  #{destinoCalle}, #{destinoNumero}, #{destinoColonia}, #{destinoCodigoPostal}, #{idDestinoCiudad},  #{noGuia}, #{costoDeEnvio}, #{idEstadoDeEnvio}, #{idColaborador}
         )
     </insert>
 
@@ -74,13 +72,18 @@
             origenNumero = #{origenNumero},
             origenColonia = #{origenColonia},
             origenCodigoPostal = #{origenCodigoPostal},
-            idOrigenCiudad = #{idCiudadOrigen}, destinoCalle = #{destinoCalle},
-            destinoNumero = #{destinoNumero},
+            idOrigenCiudad = #{idOrigenCiudad}, destinoCalle = #{destinoCalle}, destinoNumero = #{destinoNumero},
             destinoColonia = #{destinoColonia},
             destinoCodigoPostal = #{destinoCodigoPostal},
-            idDestinoCiudad = #{idCiudadDestino}, costoDeEnvio = #{costoDeEnvio},
-            idEstadoDeEnvio = #{idEstadoDeEnvio},
+            idDestinoCiudad = #{idDestinoCiudad}, costoDeEnvio = #{costoDeEnvio}, idEstadoDeEnvio = #{idEstadoDeEnvio},
             idColaborador = #{idColaborador}
+        WHERE idEnvio = #{idEnvio}
+    </update>
+    
+    <update id="actualizarEstado" parameterType="pojo.Envio">
+        UPDATE envio
+        SET
+            idEstadoDeEnvio = #{idEstadoDeEnvio}
         WHERE idEnvio = #{idEnvio}
     </update>
 

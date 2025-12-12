@@ -1,5 +1,6 @@
 package ws;
 
+import Utilidades.Constantes;
 import dominio.EnvioImp; 
 import dominio.CiudadImp; // Importación necesaria para la validación
 import java.util.List;
@@ -16,11 +17,30 @@ import javax.ws.rs.core.MediaType;
 import pojo.Envio;
 import pojo.EstadoDeEnvio;
 import dto.Mensaje;
+import mybatis.MyBatisUtil;
+import org.apache.ibatis.session.SqlSession;
 import pojo.Ciudad; // Necesario para la validación de ID de ciudad
 
 
 @Path("envio")
 public class EnvioWS {
+    
+    @Path("actualizar-estado") 
+    @PUT // Es importante usar PUT o POST para actualizaciones
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje actualizarEstadoEnvio(Envio envio) {
+        
+        // Validación mínima de los IDs que necesitamos
+        if (envio == null || envio.getIdEnvio() == null || envio.getIdEnvio() <= 0 || 
+            envio.getIdEstadoDeEnvio() == null || envio.getIdEstadoDeEnvio() <= 0) {
+            
+            throw new BadRequestException("El ID del Envío o el ID del Estado son inválidos.");
+        }
+        
+        // Llama al método que ya implementaste en EnvioImp.java
+        return EnvioImp.actualizarEstadoEnvio(envio); 
+    }
     
     // --- Servicios de LECTURA (GET) ---
     
@@ -146,4 +166,5 @@ public class EnvioWS {
         
         return error;
     }
+
 }

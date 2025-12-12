@@ -30,9 +30,12 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <mapper resource ="mybatis/mapper/EnvioMapper.xml" />
     <mapper resource ="mybatis/mapper/ColaboradorMapper.xml" />
     <mapper resource ="mybatis/mapper/ConductorAsignadoMapper.xml" />
+    <mapper resource ="mybatis/mapper/LoginMapper.xml" />
+    <mapper resource ="mybatis/mapper/HistorialDeBaja.xml" />
+    <mapper resource ="mybatis/mapper/HistorialDeEnvio.xml" />
     <mapper resource="mybatis/mapper/CiudadMapper.xml"/>
     <mapper resource="mybatis/mapper/EstadoMapper.xml"/>
-
+    <mapper resource ="mybatis/mapper/SucursalMapper.xml" />
 
 </mappers>
 
