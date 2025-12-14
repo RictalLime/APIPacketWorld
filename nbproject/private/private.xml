@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/RolWS.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/ClienteImp.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/ColaboradorImp.java</file>
@@ -26,6 +27,15 @@
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/web/WEB-INF/web.xml</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/ConductorAsignadoImp.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/nbproject/build-impl.xml</file>
+=======
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/ConductorAsignadoImp.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/ColaboradorImp.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/ImpRol.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/EnvioImp.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/ClienteImp.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/ImpUnidad.java</file>
+            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/PaqueteImp.java</file>
+>>>>>>> 4921d33993d33c0b9ffc68e2cf2409fbb2291471
         </group>
     </open-files>
 </project-private>

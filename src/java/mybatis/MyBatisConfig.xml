@@ -26,6 +26,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <mapper resource="mybatis/mapper/RolMapper.xml"/>
     <mapper resource="mybatis/mapper/UnidadMapper.xml"/>
     <mapper resource ="mybatis/mapper/ClienteMapper.xml" />
+    <mapper resource ="mybatis/mapper/PaqueteMapper.xml" />
+    <mapper resource ="mybatis/mapper/EnvioMapper.xml" />
     <mapper resource ="mybatis/mapper/ColaboradorMapper.xml" />
     <mapper resource ="mybatis/mapper/ConductorAsignadoMapper.xml" />
 

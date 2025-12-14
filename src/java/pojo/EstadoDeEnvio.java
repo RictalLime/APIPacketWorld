@@ -4,26 +4,28 @@ package pojo;
  *
  * @author Angel2
  */
-
 public class EstadoDeEnvio {
     
-    private Integer idEstadoEnvio;
+    private Integer idEstadoDeEnvio;
     private String nombre;
 
+    // Constructor vacío
     public EstadoDeEnvio() {
     }
 
-    public EstadoDeEnvio(Integer idEstadoEnvio, String nombre) {
-        this.idEstadoEnvio = idEstadoEnvio;
+    // Constructor con parámetros
+    public EstadoDeEnvio(Integer idEstadoDeEnvio, String nombre) {
+        this.idEstadoDeEnvio = idEstadoDeEnvio;
         this.nombre = nombre;
     }
 
-    public Integer getIdEstadoEnvio() {
-        return idEstadoEnvio;
+    // Getters y Setters
+    public Integer getIdEstadoDeEnvio() {
+        return idEstadoDeEnvio;
     }
 
-    public void setIdEstadoEnvio(Integer idEstadoEnvio) {
-        this.idEstadoEnvio = idEstadoEnvio;
+    public void setIdEstadoDeEnvio(Integer idEstadoDeEnvio) {
+        this.idEstadoDeEnvio = idEstadoDeEnvio;
     }
 
     public String getNombre() {
