@@ -1,6 +1,6 @@
 package dominio;
 
-import Utilidades.Constantes; // Usando tu clase Constantes
+import Utilidades.Constantes;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,10 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 import pojo.Cliente;
 import dto.Mensaje;
 
-/**
- *
- * @author Tron7
- */
 public class ClienteImp {
 
     // ------------------------------------
@@ -23,16 +19,17 @@ public class ClienteImp {
         List<Cliente> respuesta = null;
         if(conexionBD !=null){
             try {
+                // La consulta SELECT en el XML ahora hace el JOIN
                 respuesta = conexionBD.selectList("cliente.obtenerClientes");
             } catch (Exception e) {
-                // Manejo de excepción de consulta
+                 System.err.println("Error al obtener clientes: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
                 }
             }
         } else {
-            // Opcional: System.err.println(Constantes.MSJ_ERROR_BD);
+             System.err.println(Constantes.MSJ_ERROR_BD);
         }  
         return respuesta;
     }
@@ -49,7 +46,7 @@ public class ClienteImp {
                 parametros.put("nombre", nombre);
                 clientes = conexionBD.selectList("cliente.obtenerClientesPorNombre", parametros);
             } catch (Exception e) {
-                 // Manejo de excepción de consulta
+                 System.err.println("Error al obtener clientes por nombre: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -71,7 +68,7 @@ public class ClienteImp {
                 parametros.put("correo", correo);
                 cliente = conexionBD.selectList("cliente.obtenerClientesPorCorreo", parametros);
             } catch (Exception e) {
-                 // Manejo de excepción de consulta
+                 System.err.println("Error al obtener cliente por correo: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -93,7 +90,7 @@ public class ClienteImp {
                 parametros.put("telefono", telefono);
                 cliente = conexionBD.selectList("cliente.obtenerClientesPorTelefono", parametros);
             } catch (Exception e) {
-                 // Manejo de excepción de consulta
+                 System.err.println("Error al obtener cliente por teléfono: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -112,6 +109,7 @@ public class ClienteImp {
 
         if (conexion != null) {
             try {
+                // Usa el idCiudad del POJO
                 int filasAfectadas = conexion.insert("cliente.agregarCliente", cliente);
                 conexion.commit();
                 if (filasAfectadas > 0) {
@@ -147,6 +145,7 @@ public class ClienteImp {
 
         if (conexion != null) {
             try {
+                // Usa el idCiudad del POJO
                 int filasAfectadas = conexion.update("cliente.editarCliente", cliente);
                 conexion.commit();
                 if (filasAfectadas > 0) {

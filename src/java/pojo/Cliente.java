@@ -1,145 +1,144 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pojo;
 
 /**
- *
- * @author Tron7
+ * Clase Cliente - Adaptada a la normalización de Ubicación.
  */
-// clase Cliente
 public class Cliente {
     
-    // Atributos
+    // Atributos de Identificación y Contacto
     private Integer idCliente;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
+    private String telefono;
+    private String correo;
+    
+    // Atributos de Dirección
     private String calle;
     private String numeroDeCasa;
     private String colonia;
-    private String codigoPostal;
-    private String ciudad;
-    private String estado;
-    private String telefono;
-    private String correo;
+    private String cp; // Código Postal
+    
+    // ATRIBUTOS DE UBICACIÓN (NORMALIZADOS)
+    
+    /**
+     * Clave Foránea: Usada para INSERT/UPDATE. 
+     * Apunta a la tabla 'ciudad'.
+     */
+    private Integer idCiudad; 
+    
+    /**
+     * Campo de Lectura: Nombre de la ciudad obtenido vía JOIN.
+     * Usado para SELECT.
+     */
+    private String nombreCiudad;
+    
+    /**
+     * Campo de Lectura: Nombre del estado obtenido vía JOIN.
+     * Usado para SELECT.
+     */
+    private String nombreEstado;
     
     // Constructor por defecto
     public Cliente() {
     }
-    
-    // Constructor
-    public Cliente(Integer idCliente, String nombre, String apellidoPaterno, String apellidoMaterno, String calle, String numeroDeCasa, String colonia, String codigoPostal, String ciudad, String estado, String telefono, String correo) {
-        this.idCliente = idCliente;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.calle = calle;
-        this.numeroDeCasa = numeroDeCasa;
-        this.colonia = colonia;
-        this.codigoPostal = codigoPostal;
-        this.ciudad = ciudad;
-        this.estado = estado;
-        this.telefono = telefono;
-        this.correo = correo;
-    }
-    
-    //Metodos get
+
+    // --- Getters y Setters ---
+
+    // ID y Nombres
     public Integer getIdCliente() {
         return idCliente;
     }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getApellidoPaterno() {
-        return apellidoPaterno;
-    }
-
-    public String getApellidoMaterno() {
-        return apellidoMaterno;
-    }
-
-    public String getCalle() {
-        return calle;
-    }
-
-    public String getNumeroDeCasa() {
-        return numeroDeCasa;
-    }
-
-    public String getColonia() {
-        return colonia;
-    }
-
-    public String getCodigoPostal() {
-        return codigoPostal;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-    
-    //Metodos set
     public void setIdCliente(Integer idCliente) {
         this.idCliente = idCliente;
     }
-
+    public String getNombre() {
+        return nombre;
+    }
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
     public void setApellidoPaterno(String apellidoPaterno) {
         this.apellidoPaterno = apellidoPaterno;
     }
-
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
     public void setApellidoMaterno(String apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
     }
 
+    // Dirección
+    public String getCalle() {
+        return calle;
+    }
     public void setCalle(String calle) {
         this.calle = calle;
     }
-
+    public String getNumeroDeCasa() {
+        return numeroDeCasa;
+    }
     public void setNumeroDeCasa(String numeroDeCasa) {
         this.numeroDeCasa = numeroDeCasa;
     }
-
+    public String getColonia() {
+        return colonia;
+    }
     public void setColonia(String colonia) {
         this.colonia = colonia;
     }
-
+    
+    // Código Postal
+    public String getCp() {
+        return cp;
+    }
+    public void setCp(String cp) {
+        this.cp = cp;
+    }
+    public String getCodigoPostal() { // Se mantiene para compatibilidad con el campo antiguo si es necesario
+        return cp;
+    }
     public void setCodigoPostal(String codigoPostal) {
-        this.codigoPostal = codigoPostal;
+        this.cp = codigoPostal;
     }
 
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
+    // Contacto
+    public String getTelefono() {
+        return telefono;
     }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-
+    public String getCorreo() {
+        return correo;
+    }
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+    
+    // NUEVOS CAMPOS DE UBICACIÓN
+    
+    public Integer getIdCiudad() {
+        return idCiudad;
+    }
+    public void setIdCiudad(Integer idCiudad) {
+        this.idCiudad = idCiudad;
+    }
+    
+    public String getNombreCiudad() {
+        return nombreCiudad;
+    }
+    public void setNombreCiudad(String nombreCiudad) {
+        this.nombreCiudad = nombreCiudad;
+    }
+    
+    public String getNombreEstado() {
+        return nombreEstado;
+    }
+    public void setNombreEstado(String nombreEstado) {
+        this.nombreEstado = nombreEstado;
     }
 }

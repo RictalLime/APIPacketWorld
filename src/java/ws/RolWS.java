@@ -18,7 +18,6 @@ import pojo.Rol;
 
 
 @Path("rol")
-
 public class  RolWS {
     
      @Context

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="historialDeEnvio">
+
+    <select id="getObtenerHistorialDeEnvio" resultType="pojo.HistorialDeEnvio">
+        SELECT 
+            h.idHistorialDeEnvio,
+            h.idEstadoDeEnvio,
+            h.idColaborador,
+            c.nombre AS colaborador,
+            h.noGuia,
+            h.motivo,
+            h.tiempoDeCambio
+        FROM historialDeEnvio h
+        INNER JOIN colaborador c ON h.idColaborador = c.idColaborador
+    </select>
+
+    <select id="getHistorialDeEnvioPorNoGuia" parameterType="String" resultType="pojo.HistorialDeEnvio">
+        SELECT 
+            h.idHistorialDeEnvio,
+            h.idEstadoDeEnvio,
+            h.idColaborador,
+            c.nombre AS colaborador,
+            h.noGuia,
+            h.motivo,
+            h.tiempoDeCambio
+        FROM 
+            historialDeEnvio h
+        INNER JOIN colaborador c ON h.idColaborador = c.idColaborador
+        WHERE 
+            h.noGuia = #{noGuia};
+    </select>
+
+    <insert id="insert" parameterType="pojo.HistorialDeEnvio">
+        INSERT INTO historialDeEnvio (
+            idEstadoDeEnvio,
+            idColaborador,
+            noGuia,
+            motivo,
+            tiempoDeCambio
+        ) VALUES (
+            #{idEstadoDeEnvio},
+            #{idColaborador},
+            #{noGuia},
+            #{motivo},
+            #{tiempoDeCambio}
+        );
+    </insert>
+
+    <update id="update" parameterType="pojo.HistorialDeEnvio">
+        UPDATE historialDeEnvio
+        SET
+            idEstadoDeEnvio = #{idEstadoDeEnvio},
+            idColaborador = #{idColaborador},
+            noGuia = #{noGuia},
+            motivo = #{motivo},
+            tiempoDeCambio = #{tiempoDeCambio}
+        WHERE idHistorialDeEnvio = #{idHistorialDeEnvio};
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM historialDeEnvio
+        WHERE idHistorialDeEnvio = #{idHistorialDeEnvio};
+    </delete>
+
+</mapper>

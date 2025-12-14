@@ -1,24 +1,30 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package pojo;
 
+
 public class HistorialDeEnvio {
-    
     private Integer idHistorialDeEnvio;
-    private String noGuia; // En tu script es VARCHAR(20)
-    private Integer idColaborador; // En tu script es idColaborador, no noPersonal
-    private Integer idEstadoDeEnvio; // ID numérico
-    private String nombreEstado;     // Campo extra para mostrar el texto (JOIN)
+    private Integer idEstadoDeEnvio;
+    private Integer idColaborador;
+    private String colaborador;
+    private String noGuia;
     private String motivo;
-    private String tiempoDeCambio;   // Mapea a columna 'tiempoDeCambio'
+    private String tiempoDeCambio;
+    
 
     public HistorialDeEnvio() {
     }
 
-    public HistorialDeEnvio(Integer idHistorialDeEnvio, String noGuia, Integer idColaborador, Integer idEstadoDeEnvio, String nombreEstado, String motivo, String tiempoDeCambio) {
+    public HistorialDeEnvio(Integer idHistorialDeEnvio, Integer idEstadoDeEnvio, Integer idColaborador, String colaborador, String noGuia, String motivo, String tiempoDeCambio) {
         this.idHistorialDeEnvio = idHistorialDeEnvio;
-        this.noGuia = noGuia;
-        this.idColaborador = idColaborador;
         this.idEstadoDeEnvio = idEstadoDeEnvio;
-        this.nombreEstado = nombreEstado;
+        this.idColaborador = idColaborador;
+        this.colaborador = colaborador;
+        this.noGuia = noGuia;
         this.motivo = motivo;
         this.tiempoDeCambio = tiempoDeCambio;
     }
@@ -27,55 +33,60 @@ public class HistorialDeEnvio {
         return idHistorialDeEnvio;
     }
 
-    public void setIdHistorialDeEnvio(Integer idHistorialDeEnvio) {
-        this.idHistorialDeEnvio = idHistorialDeEnvio;
-    }
-
-    public String getNoGuia() {
-        return noGuia;
-    }
-
-    public void setNoGuia(String noGuia) {
-        this.noGuia = noGuia;
+    public Integer getIdEstadoDeEnvio() {
+        return idEstadoDeEnvio;
     }
 
     public Integer getIdColaborador() {
         return idColaborador;
     }
 
-    public void setIdColaborador(Integer idColaborador) {
-        this.idColaborador = idColaborador;
+    public String getColaborador() {
+        return colaborador;
     }
 
-    public Integer getIdEstadoDeEnvio() {
-        return idEstadoDeEnvio;
-    }
-
-    public void setIdEstadoDeEnvio(Integer idEstadoDeEnvio) {
-        this.idEstadoDeEnvio = idEstadoDeEnvio;
-    }
-
-    public String getNombreEstado() {
-        return nombreEstado;
-    }
-
-    public void setNombreEstado(String nombreEstado) {
-        this.nombreEstado = nombreEstado;
+    public String getNoGuia() {
+        return noGuia;
     }
 
     public String getMotivo() {
         return motivo;
     }
 
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
-
     public String getTiempoDeCambio() {
         return tiempoDeCambio;
+    }
+
+    public void setIdHistorialDeEnvio(Integer idHistorialDeEnvio) {
+        this.idHistorialDeEnvio = idHistorialDeEnvio;
+    }
+
+    public void setIdEstadoDeEnvio(Integer idEstadoDeEnvio) {
+        this.idEstadoDeEnvio = idEstadoDeEnvio;
+    }
+
+    public void setIdColaborador(Integer idColaborador) {
+        this.idColaborador = idColaborador;
+    }
+
+    public void setColaborador(String colaborador) {
+        this.colaborador = colaborador;
+    }
+
+    public void setNoGuia(String noGuia) {
+        this.noGuia = noGuia;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
     }
 
     public void setTiempoDeCambio(String tiempoDeCambio) {
         this.tiempoDeCambio = tiempoDeCambio;
     }
+    
+
+    
+    
+    
 }
