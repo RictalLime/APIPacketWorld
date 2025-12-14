@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="paquete">
+
+    <select id="getPaquetesPorEnvio" resultType="pojo.Paquete">
+        SELECT 
+            p.idPaquete, 
+            p.idEnvio, 
+            p.descripcion, 
+            p.peso, 
+            p.alto, 
+            p.ancho, 
+            p.profundidad,
+            CONCAT(p.alto, 'X', p.ancho, 'X', p.profundidad) AS dimensiones,
+            e.noGuia
+        FROM paquete p
+        INNER JOIN envio e ON p.idEnvio = e.idEnvio
+        WHERE p.idEnvio = #{idEnvio};
+    </select>
+
+    
+    <select id="getPaquetes" resultType="pojo.Paquete">
+        SELECT 
+            p.idPaquete, 
+            p.idEnvio, 
+            p.descripcion, 
+            p.peso, 
+            p.alto, 
+            p.ancho, 
+            p.profundidad,
+            CONCAT(p.alto, 'X', p.ancho, 'X', p.profundidad) AS dimensiones,
+            e.noGuia
+        FROM paquete p
+        INNER JOIN envio e ON p.idEnvio = e.idEnvio;
+    </select>
+    
+    <select id="getPaquetePorNoGuia" resultType="pojo.Paquete">
+        SELECT 
+            p.idPaquete, 
+            p.idEnvio, 
+            p.descripcion, 
+            p.peso, 
+            p.alto, 
+            p.ancho, 
+            p.profundidad,
+            CONCAT(p.alto, 'X', p.ancho, 'X', p.profundidad) AS dimensiones,
+            e.noGuia
+        FROM paquete p
+        INNER JOIN envio e ON p.idEnvio = e.idEnvio
+        WHERE e.noGuia = #{noGuia};
+    </select>
+
+
+    
+     <insert id="registrar" parameterType="pojo.Paquete">
+        INSERT INTO paquete (
+            idEnvio, 
+            descripcion, 
+            peso, 
+            alto, 
+            ancho, 
+            profundidad
+        ) VALUES (
+            #{idEnvio},
+            #{descripcion},
+            #{peso},
+            #{alto},
+            #{ancho},
+            #{profundidad}
+        );
+    </insert>
+    
+    <update id="editar" parameterType="pojo.Paquete">
+       UPDATE paquete
+       SET 
+           descripcion = #{descripcion},
+           peso = #{peso},
+           alto = #{alto},
+           ancho = #{ancho},
+           profundidad = #{profundidad}
+       WHERE idPaquete = #{idPaquete};
+       </update>
+
+    <delete id="eliminar" parameterType="java.lang.Integer">
+       DELETE FROM paquete
+       WHERE idPaquete = #{idPaquete};
+   </delete>
+  
+
+
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.HistorialDeEnvioMapper">
+
+    <insert id="registrarCambioEstatus" parameterType="pojo.HistorialDeEnvio">
+        INSERT INTO historialDeEnvio 
+            (idEstadoDeEnvio, idColaborador, noGuia, motivo, tiempoDeCambio)
+        VALUES 
+            (#{idEstadoDeEnvio}, #{idColaborador}, #{noGuia}, #{motivo}, NOW());
+    </insert>
+
+    <!-- Hacemos JOIN para traer el nombre del estado (ej. "En tránsito") -->
+    <select id="obtenerHistorialPorEnvio" resultType="pojo.HistorialDeEnvio" parameterType="String">
+        SELECT 
+            h.idHistorialDeEnvio,
+            h.noGuia,
+            h.idColaborador,
+            h.idEstadoDeEnvio,
+            e.nombre AS nombreEstado,
+            h.motivo,
+            DATE_FORMAT(h.tiempoDeCambio, '%Y-%m-%d %H:%i:%s') AS tiempoDeCambio
+        FROM historialDeEnvio h
+        INNER JOIN estadoDeEnvio e ON h.idEstadoDeEnvio = e.idEstadoDeEnvio
+        WHERE h.noGuia = #{noGuia}
+        ORDER BY h.tiempoDeCambio DESC;
+    </select>
+
+</mapper>

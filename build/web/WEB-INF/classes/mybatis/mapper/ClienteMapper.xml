@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cliente">
+
+    <sql id="selectClienteFields">
+        SELECT 
+            c.idCliente, c.nombre, c.apellidoPaterno, c.apellidoMaterno, 
+            c.calle, c.numeroDeCasa, c.colonia, c.codigoPostal AS cp, 
+            c.telefono, c.correo,
+            
+            -- Clave foránea
+            c.idCiudad, 
+            
+            -- Campos de la ubicación (requieren JOINs)
+            ci.nombre AS nombreCiudad,
+            e.nombre AS nombreEstado
+        FROM cliente c
+        -- JOINs para obtener los nombres de ubicación
+        INNER JOIN ciudad ci ON c.idCiudad = ci.idCiudad
+        INNER JOIN estado e ON ci.idEstado = e.idEstado
+    </sql>
+
+    <select id="obtenerClientes" resultType="pojo.Cliente">
+        <include refid="selectClienteFields"/>
+    </select>
+    
+    <select id="obtenerClientesPorNombre" resultType="pojo.Cliente">
+        <include refid="selectClienteFields"/>
+        WHERE c.nombre LIKE CONCAT('%', #{nombre}, '%');
+    </select>
+    
+    <select id="obtenerClientesPorTelefono" resultType="pojo.Cliente">
+        <include refid="selectClienteFields"/>
+        WHERE c.telefono = #{telefono};
+    </select>
+    
+    <select id="obtenerClientesPorCorreo" resultType="pojo.Cliente">
+        <include refid="selectClienteFields"/>
+        WHERE c.correo = #{correo};
+    </select>
+    
+    <insert id="agregarCliente" parameterType="pojo.Cliente">
+        INSERT INTO cliente 
+        (nombre, apellidoPaterno, apellidoMaterno, calle, numeroDeCasa, colonia, codigoPostal, idCiudad, telefono, correo)
+        VALUES 
+        (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{calle}, #{numeroDeCasa}, #{colonia}, #{cp}, #{idCiudad}, #{telefono}, #{correo});
+    </insert>
+    
+    <update id="editarCliente" parameterType="pojo.Cliente">
+        UPDATE cliente
+        SET nombre = #{nombre},
+            apellidoPaterno = #{apellidoPaterno},
+            apellidoMaterno = #{apellidoMaterno},
+            calle = #{calle},
+            numeroDeCasa = #{numeroDeCasa},
+            colonia = #{colonia},
+            codigoPostal = #{cp},
+            idCiudad = #{idCiudad},
+            telefono = #{telefono},
+            correo = #{correo}
+        WHERE idCliente = #{idCliente};
+    </update>
+    
+    <delete id="eliminarCliente" parameterType="Integer">
+        DELETE FROM cliente
+        WHERE idCliente = #{idCliente};
+    </delete>
+    
+</mapper>

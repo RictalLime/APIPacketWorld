@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.EnvioMapper">
+
+    <!-- ResultMap para mapear las columnas de BD a tu POJO Envio -->
+    <resultMap id="mapaEnvio" type="pojo.Envio">
+        <id property="idEnvio" column="idEnvio" />
+        <result property="noGuia" column="noGuia" />
+        <result property="idCliente" column="idCliente" />
+        <result property="idColaborador" column="idColaborador" />
+        <result property="origenCalle" column="origenCalle" />
+        <result property="origenNumero" column="origenNumero" />
+        <result property="origenColonia" column="origenColonia" />
+        <result property="origenCodigoPostal" column="origenCodigoPostal" />
+        <result property="origenCiudad" column="origenCiudad" />
+        <result property="origenEstado" column="origenEstado" />
+        <result property="destino" column="destino" /> <!-- En tu BD es un varchar completo -->
+        <result property="costoDeEnvio" column="costoDeEnvio" />
+        <result property="idEstadoDeEnvio" column="idEstadoDeEnvio" />
+        <result property="estatus" column="nombreEstado" /> <!-- Alias del JOIN -->
+    </resultMap>
+
+    <!-- Consulta por Número de Guía -->
+    <select id="obtenerEnviosPorNoGuia" resultMap="mapaEnvio" parameterType="String">
+        SELECT 
+            e.idEnvio,
+            e.idCliente,
+            e.idColaborador,
+            e.origenCalle,
+            e.origenNumero,
+            e.origenColonia,
+            e.origenCodigoPostal,
+            e.origenCiudad,
+            e.origenEstado,
+            e.noGuia,
+            e.costoDeEnvio,
+            e.destino,
+            e.idEstadoDeEnvio,
+            cat.nombre AS nombreEstado
+        FROM envio e
+        INNER JOIN estadoDeEnvio cat ON e.idEstadoDeEnvio = cat.idEstadoDeEnvio
+        WHERE e.noGuia = #{noGuia}
+    </select>
+
+    <!-- Consulta General (Extra, por si la usas) -->
+    <select id="obtenerEnvios" resultMap="mapaEnvio">
+        SELECT 
+            e.idEnvio,
+            e.noGuia,
+            e.destino,
+            cat.nombre AS nombreEstado
+        FROM envio e
+        INNER JOIN estadoDeEnvio cat ON e.idEstadoDeEnvio = cat.idEstadoDeEnvio
+    </select>
+
+</mapper>

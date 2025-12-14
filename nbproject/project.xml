@@ -27,24 +27,21 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.jaxws21.classpath}</file>
+                    <file>${file.reference.javax.json-1.1.4__1_.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.javax.json-1.1.4.jar}</file>
+                    <file>${file.reference.javax.json-api-1.1.4__1_.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.javax.json-api-1.1.4.jar}</file>
+                    <file>${file.reference.javax.activation-1.2.0.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-<<<<<<< HEAD
-=======
                 <library dirs="200">
-                    <file>${file.reference.mysql-connector-java-8.0.20.jar}</file>
+                    <file>${file.reference.mysql-connector-j-9.5.0.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
->>>>>>> origin/aldo
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>

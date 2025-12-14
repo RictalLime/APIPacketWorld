@@ -1,266 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-<<<<<<< HEAD
-         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.EnvioMapper">
 
-<mapper namespace="envio">
+    <!-- ResultMap para mapear las columnas de BD a tu POJO Envio -->
+    <resultMap id="mapaEnvio" type="pojo.Envio">
+        <id property="idEnvio" column="idEnvio" />
+        <result property="noGuia" column="noGuia" />
+        <result property="idCliente" column="idCliente" />
+        <result property="idColaborador" column="idColaborador" />
+        <result property="origenCalle" column="origenCalle" />
+        <result property="origenNumero" column="origenNumero" />
+        <result property="origenColonia" column="origenColonia" />
+        <result property="origenCodigoPostal" column="origenCodigoPostal" />
+        <result property="origenCiudad" column="origenCiudad" />
+        <result property="origenEstado" column="origenEstado" />
+        <result property="destino" column="destino" /> <!-- En tu BD es un varchar completo -->
+        <result property="costoDeEnvio" column="costoDeEnvio" />
+        <result property="idEstadoDeEnvio" column="idEstadoDeEnvio" />
+        <result property="estatus" column="nombreEstado" /> <!-- Alias del JOIN -->
+    </resultMap>
 
-
-    <select id="getObtenerEnvios"  resultType="pojo.Envio">
+    <!-- Consulta por Número de Guía -->
+    <select id="obtenerEnviosPorNoGuia" resultMap="mapaEnvio" parameterType="String">
         SELECT 
             e.idEnvio,
             e.idCliente,
-            CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno) AS cliente,
+            e.idColaborador,
+            e.origenCalle,
+            e.origenNumero,
+            e.origenColonia,
+            e.origenCodigoPostal,
+            e.origenCiudad,
+            e.origenEstado,
+            e.noGuia,
+            e.costoDeEnvio,
             e.destino,
-            CONCAT(e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, ', CP: ', e.origenCodigoPostal, ', ', e.origenCiudad, ', ', e.origenEstado) AS origen,
-            e.origenCalle,
-            e.origenNumero,
-            e.origenColonia,
-            e.origenCodigoPostal,
-            e.origenCiudad,
-            e.origenEstado,
-            e.noGuia,
-            e.costoDeEnvio,
             e.idEstadoDeEnvio,
-            est.nombre AS estadoDeEnvio,
-            e.idColaborador,
-            CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno) AS colaborador
+            cat.nombre AS nombreEstado
         FROM envio e
-        LEFT JOIN cliente c ON e.idCliente = c.idCliente
-        LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
-        LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador;       
-    </select>
-    
-    <select id="getObtenerEnviosConductor"  resultType="pojo.Envio">
-        SELECT 
-            e.idEnvio,
-            e.idCliente,
-            CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno, ',', c.telefono, ',', c.correo) AS cliente,
-            e.destino,
-            CONCAT(e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, ', CP: ', e.origenCodigoPostal, ', ', e.origenCiudad, ', ', e.origenEstado) AS origen,
-            e.origenCalle,
-            e.origenNumero,
-            e.origenColonia,
-            e.origenCodigoPostal,
-            e.origenCiudad,
-            e.origenEstado,
-            e.noGuia,
-            e.costoDeEnvio,
-            e.idEstadoDeEnvio,
-            est.nombre AS estadoDeEnvio,
-            e.idColaborador,
-            CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno) AS colaborador
-        FROM envio e
-        LEFT JOIN cliente c ON e.idCliente = c.idCliente
-        LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
-        LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador
-        WHERE col.idColaborador = #{idColaborador};       
-    </select>
-    
-    
-    <select id="getObtenerEnvios2"  resultType="pojo.Envio">
-        SELECT 
-            e.idEnvio,
-            e.idCliente,
-            CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno) AS cliente,
-            CONCAT(c.calle, ', ', c.numeroDeCasa, ', ', c.colonia, ', CP: ', c.codigoPostal, ', ', c.ciudad, ', ', c.estado) AS destino,
-            CONCAT(e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, ', CP: ', e.origenCodigoPostal, ', ', e.origenCiudad, ', ', e.origenEstado) AS origen,
-            e.origenCalle,
-            e.origenNumero,
-            e.origenColonia,
-            e.origenCodigoPostal,
-            e.origenCiudad,
-            e.origenEstado,
-            e.noGuia,
-            e.costoDeEnvio,
-            e.idEstadoDeEnvio,
-            est.nombre AS estadoDeEnvio,
-            e.idColaborador,
-            CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno) AS colaborador
-        FROM envio e
-        LEFT JOIN cliente c ON e.idCliente = c.idCliente
-        LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
-        LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador;       
-    </select>
-    
-    <select id="getObtenerEnviosPorNoGuia" resultType="pojo.Envio">
-        SELECT 
-            e.idEnvio,
-            e.idCliente,
-            CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno) AS cliente,
-            e.destino,
-            CONCAT(e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, ', CP: ', e.origenCodigoPostal, ', ', e.origenCiudad, ', ', e.origenEstado) AS origen,
-            e.origenCalle,
-            e.origenNumero,
-            e.origenColonia,
-            e.origenCodigoPostal,
-            e.origenCiudad,
-            e.origenEstado,
-            e.noGuia,
-            e.costoDeEnvio,
-            e.idEstadoDeEnvio,
-            est.nombre AS estadoDeEnvio,
-            e.idColaborador,
-            CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno) AS colaborador
-        FROM envio e
-        LEFT JOIN cliente c ON e.idCliente = c.idCliente
-        LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
-        LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador
-        WHERE e.noGuia = #{noGuia};
-    </select>
-
-    
-    <insert id="registrar" parameterType="pojo.Envio">
-        INSERT INTO envio (
-            idCliente,
-            origenCalle,
-            origenNumero,
-            origenColonia,
-            origenCodigoPostal,
-            origenCiudad,
-            origenEstado,
-            noGuia,
-            costoDeEnvio,
-            idEstadoDeEnvio,
-            idColaborador,
-            destino
-        ) VALUES (
-            #{idCliente},
-            #{origenCalle},
-            #{origenNumero},
-            #{origenColonia},
-            #{origenCodigoPostal},
-            #{origenCiudad},
-            #{origenEstado},
-            #{noGuia},
-            #{costoDeEnvio},
-            #{idEstadoDeEnvio},
-            #{idColaborador},
-            #{destino}
-        );
-    </insert>
-
-    <update id="editar" parameterType="pojo.Envio">
-        UPDATE envio
-        SET
-            idCliente = #{idCliente},
-            origenCalle = #{origenCalle},
-            origenNumero = #{origenNumero},
-            origenColonia = #{origenColonia},
-            origenCodigoPostal = #{origenCodigoPostal},
-            origenCiudad = #{origenCiudad},
-            origenEstado = #{origenEstado},
-            costoDeEnvio = #{costoDeEnvio},
-            idEstadoDeEnvio = #{idEstadoDeEnvio},
-            idColaborador = #{idColaborador},
-            destino=#{destino}
-        WHERE idEnvio = #{idEnvio};
-    </update>
-
-   
-    <delete id="eliminar" parameterType="int">
-        DELETE FROM envio
-        WHERE idEnvio = #{idEnvio};
-    </delete>
-    
-    <select id="getObtenerEstadosDeEnvio"  resultType="pojo.EstadoDeEnvio">
-        SELECT idEstadoDeEnvio, nombre
-        FROM estadoDeEnvio;
-    </select>
-
-</mapper>
-=======
-          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="envio">
-
-    <sql id="selectEnvioFields">
-        SELECT e.idEnvio, e.idCliente, 
-                IFNULL(CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno), 'Cliente Desconocido') AS cliente,
-                
-                e.idOrigenCiudad, e.idDestinoCiudad,  e.origenCalle, e.origenNumero, e.origenColonia, e.origenCodigoPostal, 
-                e.destinoCalle, e.destinoNumero, e.destinoColonia, e.destinoCodigoPostal,
-                cio.nombre AS nombreCiudadOrigen, eso.nombre AS nombreEstadoOrigen, 
-                cid.nombre AS nombreCiudadDestino, esd.nombre AS nombreEstadoDestino,
-                
-                CONCAT(
-                    e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, 
-                    ', CP: ', e.origenCodigoPostal, 
-                    IFNULL(CONCAT(', ', cio.nombre, ', ', eso.nombre), '')
-                ) AS origen,
-                CONCAT(
-                    e.destinoCalle, ', ', e.destinoNumero, ', ', e.destinoColonia, 
-                    ', CP: ', e.destinoCodigoPostal, 
-                    IFNULL(CONCAT(', ', cid.nombre, ', ', esd.nombre), '')
-                ) AS destino,
-                
-                e.noGuia, e.costoDeEnvio, e.idEstadoDeEnvio, 
-                IFNULL(est.nombre, 'Estado Desconocido') AS estadoDeEnvio,
-                e.idColaborador, 
-                IFNULL(CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno), 'Conductor Desconocido') AS colaborador
-        FROM envio e
-        LEFT JOIN cliente c ON e.idCliente = c.idCliente
-        LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
-        LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador
-        
-        LEFT JOIN ciudad cio ON e.idOrigenCiudad = cio.idCiudad  LEFT JOIN estado eso ON cio.idEstado = eso.idEstado
-        LEFT JOIN ciudad cid ON e.idDestinoCiudad = cid.idCiudad LEFT JOIN estado esd ON cid.idEstado = esd.idEstado
-    </sql>
-
-    <select id="getObtenerEnvios" resultType="pojo.Envio">
-        <include refid="selectEnvioFields"/>
-    </select>
-    
-    <select id="getObtenerEnviosConductor" resultType="pojo.Envio">
-        <include refid="selectEnvioFields"/>
-        WHERE e.idColaborador = #{idColaborador}
-    </select>
-    
-    <select id="getObtenerEnviosPorNoGuia" resultType="pojo.Envio">
-        <include refid="selectEnvioFields"/>
+        INNER JOIN estadoDeEnvio cat ON e.idEstadoDeEnvio = cat.idEstadoDeEnvio
         WHERE e.noGuia = #{noGuia}
     </select>
-    
-    <select id="getObtenerEstadosDeEnvio" resultType="pojo.EstadoDeEnvio">
-        SELECT idEstadoDeEnvio, nombre
-        FROM estadoDeEnvio
+
+    <!-- Consulta General (Extra, por si la usas) -->
+    <select id="obtenerEnvios" resultMap="mapaEnvio">
+        SELECT 
+            e.idEnvio,
+            e.noGuia,
+            e.destino,
+            cat.nombre AS nombreEstado
+        FROM envio e
+        INNER JOIN estadoDeEnvio cat ON e.idEstadoDeEnvio = cat.idEstadoDeEnvio
     </select>
 
-    <insert id="registrar" parameterType="pojo.Envio">
-        INSERT INTO envio (
-            idCliente, origenCalle, origenNumero, origenColonia, origenCodigoPostal, idOrigenCiudad, destinoCalle, destinoNumero, destinoColonia, destinoCodigoPostal, idDestinoCiudad, noGuia, costoDeEnvio, idEstadoDeEnvio, idColaborador
-        ) VALUES (
-            #{idCliente}, #{origenCalle}, #{origenNumero}, #{origenColonia}, #{origenCodigoPostal}, #{idOrigenCiudad},  #{destinoCalle}, #{destinoNumero}, #{destinoColonia}, #{destinoCodigoPostal}, #{idDestinoCiudad},  #{noGuia}, #{costoDeEnvio}, #{idEstadoDeEnvio}, #{idColaborador}
-        )
-    </insert>
-
-    <update id="editar" parameterType="pojo.Envio">
-        UPDATE envio
-        SET
-            idCliente = #{idCliente},
-            origenCalle = #{origenCalle},
-            origenNumero = #{origenNumero},
-            origenColonia = #{origenColonia},
-            origenCodigoPostal = #{origenCodigoPostal},
-            idOrigenCiudad = #{idOrigenCiudad}, destinoCalle = #{destinoCalle}, destinoNumero = #{destinoNumero},
-            destinoColonia = #{destinoColonia},
-            destinoCodigoPostal = #{destinoCodigoPostal},
-            idDestinoCiudad = #{idDestinoCiudad}, costoDeEnvio = #{costoDeEnvio}, idEstadoDeEnvio = #{idEstadoDeEnvio},
-            idColaborador = #{idColaborador}
-        WHERE idEnvio = #{idEnvio}
-    </update>
-    
-    <update id="actualizarEstado" parameterType="pojo.Envio">
-        UPDATE envio
-        SET
-            idEstadoDeEnvio = #{idEstadoDeEnvio}
-        WHERE idEnvio = #{idEnvio}
-    </update>
-
-    <delete id="eliminar" parameterType="int">
-        DELETE FROM envio
-        WHERE idEnvio = #{idEnvio}
-    </delete>
-    
 </mapper>
->>>>>>> origin/aldo

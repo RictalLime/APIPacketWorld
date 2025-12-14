@@ -1,4 +1,7 @@
 package pojo;
+
+import java.util.List;
+
 /**
  * Clase Envio - Adaptada a la normalización de Ubicación.
  */
@@ -48,6 +51,10 @@ public class Envio {
     private String nombreCiudadDestino;
     private String nombreEstadoDestino;
     
+    // --- LISTAS DETALLADAS (No están en la tabla envio, se llenan aparte) ---
+    private List<HistorialDeEnvio> historial;
+    private List<Paquete> paquetes;
+
     public Envio() {
     }
     
@@ -85,6 +92,10 @@ public class Envio {
     public String getDestinoCodigoPostal() { return destinoCodigoPostal; }
     public String getNombreCiudadDestino() { return nombreCiudadDestino; } 
     public String getNombreEstadoDestino() { return nombreEstadoDestino; } 
+    
+    // LISTAS
+    public List<HistorialDeEnvio> getHistorial() { return historial; }
+    public List<Paquete> getPaquetes() { return paquetes; }
 
     // --- Setters ---
     public void setIdEnvio(Integer idEnvio) { this.idEnvio = idEnvio; }
@@ -95,7 +106,7 @@ public class Envio {
     public void setNoGuia(String noGuia) { this.noGuia = noGuia; }
     public void setCostoDeEnvio(float costoDeEnvio) { this.costoDeEnvio = costoDeEnvio; }
     public void setIdEstadoDeEnvio(Integer idEstadoDeEnvio) { this.idEstadoDeEnvio = idEstadoDeEnvio; }
-    public void setEstadoDeEnvio(String estadoDeEnvio) { this.estadoDeEnvio = estadoDeEnvio; }
+    public void setEstadoDeEnvio(String estadoDeEnvio) { this.estadoDeEnvio = estadoDeEnvio; } 
     
     // ORIGEN
     public void setIdCiudadOrigen(Integer idCiudadOrigen) { this.idCiudadOrigen = idCiudadOrigen; }
@@ -116,5 +127,9 @@ public class Envio {
     public void setDestinoCodigoPostal(String destinoCodigoPostal) { this.destinoCodigoPostal = destinoCodigoPostal; }
     public void setNombreCiudadDestino(String nombreCiudadDestino) { this.nombreCiudadDestino = nombreCiudadDestino; }
     public void setNombreEstadoDestino(String nombreEstadoDestino) { this.nombreEstadoDestino = nombreEstadoDestino; }
+    
+    // LISTAS (Esto era lo que faltaba)
+    public void setHistorial(List<HistorialDeEnvio> historial) { this.historial = historial; }
+    public void setPaquetes(List<Paquete> paquetes) { this.paquetes = paquetes; }
 
 }
