@@ -8,11 +8,21 @@
         SELECT e.idEnvio, e.idCliente, 
                 IFNULL(CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno), 'Cliente Desconocido') AS cliente,
                 
-                e.idOrigenCiudad, e.idDestinoCiudad,  e.origenCalle, e.origenNumero, e.origenColonia, e.origenCodigoPostal, 
-                e.destinoCalle, e.destinoNumero, e.destinoColonia, e.destinoCodigoPostal,
-                cio.nombre AS nombreCiudadOrigen, eso.nombre AS nombreEstadoOrigen, 
-                cid.nombre AS nombreCiudadDestino, esd.nombre AS nombreEstadoDestino,
+                -- IDs de Ubicación (DB)
+                e.idOrigenCiudad, e.idDestinoCiudad,
+                e.idOrigenEstado, e.idDestinoEstado, 
                 
+                -- Dirección Física
+                e.origenCalle, e.origenNumero, e.origenColonia, e.origenCodigoPostal, 
+                e.destinoCalle, e.destinoNumero, e.destinoColonia, e.destinoCodigoPostal,
+                
+                -- Nombres obtenidos por JOINs (POJO)
+                cio.nombre AS nombreCiudadOrigen, 
+                eso.nombre AS nombreEstadoOrigen, 
+                cid.nombre AS nombreCiudadDestino, 
+                esd.nombre AS nombreEstadoDestino,
+                
+                -- Campos concatenados (para campos 'origen' y 'destino' del POJO)
                 CONCAT(
                     e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, 
                     ', CP: ', e.origenCodigoPostal, 
@@ -33,20 +43,22 @@
         LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
         LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador
         
-        LEFT JOIN ciudad cio ON e.idOrigenCiudad = cio.idCiudad  LEFT JOIN estado eso ON cio.idEstado = eso.idEstado
-        LEFT JOIN ciudad cid ON e.idDestinoCiudad = cid.idCiudad LEFT JOIN estado esd ON cid.idEstado = esd.idEstado
-    </sql>
+        -- JOINs para Origen
+        LEFT JOIN ciudad cio ON e.idOrigenCiudad = cio.idCiudad
+        LEFT JOIN estado eso ON e.idOrigenEstado = eso.idEstado    -- JOINs para Destino
+        LEFT JOIN ciudad cid ON e.idDestinoCiudad = cid.idCiudad 
+        LEFT JOIN estado esd ON e.idDestinoEstado = esd.idEstado  </sql>
 
     <select id="getObtenerEnvios" resultType="pojo.Envio">
         <include refid="selectEnvioFields"/>
     </select>
     
-    <select id="getObtenerEnviosConductor" resultType="pojo.Envio">
+    <select id="getObtenerEnviosConductor" resultType="pojo.Envio" parameterType="int">
         <include refid="selectEnvioFields"/>
         WHERE e.idColaborador = #{idColaborador}
     </select>
     
-    <select id="getObtenerEnviosPorNoGuia" resultType="pojo.Envio">
+    <select id="getObtenerEnviosPorNoGuia" resultType="pojo.Envio" parameterType="String">
         <include refid="selectEnvioFields"/>
         WHERE e.noGuia = #{noGuia}
     </select>
@@ -58,9 +70,11 @@
 
     <insert id="registrar" parameterType="pojo.Envio">
         INSERT INTO envio (
-            idCliente, origenCalle, origenNumero, origenColonia, origenCodigoPostal, idOrigenCiudad, destinoCalle, destinoNumero, destinoColonia, destinoCodigoPostal, idDestinoCiudad, noGuia, costoDeEnvio, idEstadoDeEnvio, idColaborador
+            idCliente, origenCalle, origenNumero, origenColonia, origenCodigoPostal, idOrigenCiudad, idOrigenEstado, destinoCalle, destinoNumero, destinoColonia, destinoCodigoPostal, idDestinoCiudad, idDestinoEstado,     noGuia, costoDeEnvio, idEstadoDeEnvio, idColaborador
         ) VALUES (
-            #{idCliente}, #{origenCalle}, #{origenNumero}, #{origenColonia}, #{origenCodigoPostal}, #{idOrigenCiudad},  #{destinoCalle}, #{destinoNumero}, #{destinoColonia}, #{destinoCodigoPostal}, #{idDestinoCiudad},  #{noGuia}, #{costoDeEnvio}, #{idEstadoDeEnvio}, #{idColaborador}
+            #{idCliente}, #{origenCalle}, #{origenNumero}, #{origenColonia}, #{origenCodigoPostal}, #{idOrigenCiudad}, #{idOrigenEstado},
+            #{destinoCalle}, #{destinoNumero}, #{destinoColonia}, #{destinoCodigoPostal}, #{idDestinoCiudad}, #{idDestinoEstado},
+            #{noGuia}, #{costoDeEnvio}, #{idEstadoDeEnvio}, #{idColaborador}
         )
     </insert>
 
@@ -72,10 +86,14 @@
             origenNumero = #{origenNumero},
             origenColonia = #{origenColonia},
             origenCodigoPostal = #{origenCodigoPostal},
-            idOrigenCiudad = #{idOrigenCiudad}, destinoCalle = #{destinoCalle}, destinoNumero = #{destinoNumero},
+            idOrigenCiudad = #{idOrigenCiudad},
+            idOrigenEstado = #{idOrigenEstado}, destinoCalle = #{destinoCalle}, 
+            destinoNumero = #{destinoNumero},
             destinoColonia = #{destinoColonia},
             destinoCodigoPostal = #{destinoCodigoPostal},
-            idDestinoCiudad = #{idDestinoCiudad}, costoDeEnvio = #{costoDeEnvio}, idEstadoDeEnvio = #{idEstadoDeEnvio},
+            idDestinoCiudad = #{idDestinoCiudad},
+            idDestinoEstado = #{idDestinoEstado}, costoDeEnvio = #{costoDeEnvio}, 
+            idEstadoDeEnvio = #{idEstadoDeEnvio},
             idColaborador = #{idColaborador}
         WHERE idEnvio = #{idEnvio}
     </update>
