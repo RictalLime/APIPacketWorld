@@ -106,10 +106,10 @@ public class ClienteWS {
     
     // --- Servicio de ELIMINAR ---
     
-    @Path("eliminar-cliente")
+    @Path("eliminar-cliente/{idCliente}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Mensaje eliminarCliente(@FormParam("idCliente") Integer idCliente){
+    public Mensaje eliminarCliente(@PathParam("idCliente") Integer idCliente){
         if(idCliente != null && idCliente > 0){
             return ClienteImp.eliminarCliente(idCliente);
         }

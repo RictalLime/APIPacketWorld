@@ -6,14 +6,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="sucursal" >
     
     <select id="obtenerSucursales" resultType="pojo.Sucursal">
-        SELECT idSucursal, codigoSucursal, nombre, estatus, calle, numero, colonia, codigoPostal, ciudad, estado
-        FROM sucursal;
+        SELECT 
+            s.idSucursal,
+            s.codigoSucursal,
+            s.nombre AS nombreSucursal,
+            s.estatus,
+            s.calle,
+            s.numero,
+            s.colonia,
+            s.codigoPostal,
+            c.idCiudad,
+            c.nombre AS ciudad,
+            e.idEstado,
+            e.nombre AS estado
+        FROM sucursal s
+        INNER JOIN ciudad c ON c.idCiudad = s.idCiudad
+        INNER JOIN estado e ON e.idEstado = s.idEstado;
     </select>
 
     
     <insert id="registrar" parameterType="pojo.Sucursal">
-        INSERT INTO sucursal ( codigoSucursal, nombre, estatus, calle, numero, colonia, codigoPostal, ciudad, estado ) 
-        VALUES ( #{codigoSucursal}, #{nombre}, #{estatus}, #{calle}, #{numero}, #{colonia}, #{codigoPostal}, #{ciudad}, #{estado} );
+        INSERT INTO sucursal 
+        (codigoSucursal, nombre, estatus, calle, numero, colonia, codigoPostal, idCiudad, idEstado)
+        VALUES 
+        (#{codigoSucursal}, #{nombre}, #{estatus}, #{calle}, #{numero}, #{colonia}, #{codigoPostal}, #{idCiudad}, #{idEstado});
     </insert>
     
     <update id="editar" parameterType="pojo.Sucursal">
@@ -23,15 +39,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             numero = #{numero},
             colonia = #{colonia},
             codigoPostal = #{codigoPostal},
-            ciudad = #{ciudad},
-            estado = #{estado}
+            idCiudad = #{idCiudad},
+            idEstado = #{idEstado}
         WHERE idSucursal = #{idSucursal};
     </update>
     
     <select id="obtenerSucursalPorId" resultType="pojo.Sucursal">
-        SELECT idSucursal, codigoSucursal, nombre, estatus, calle, numero, colonia, codigoPostal, ciudad, estado
-        FROM sucursal
-        WHERE idSucursal = #{idSucursal};
+        SELECT 
+            s.idSucursal,
+            s.codigoSucursal,
+            s.nombre,
+            s.estatus,
+            s.calle,
+            s.numero,
+            s.colonia,
+            s.codigoPostal,
+            s.idCiudad,
+            s.idEstado
+        FROM sucursal s
+        WHERE s.idSucursal = #{idSucursal};
     </select>
     
     <update id="actualizarEstatus" parameterType="pojo.Sucursal">
@@ -41,4 +67,3 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     
 </mapper>
-

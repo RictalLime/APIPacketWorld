@@ -41,10 +41,13 @@
         WHERE c.correo = #{correo};
     </select>
     
-    <insert id="agregarCliente" parameterType="pojo.Cliente">
-        INSERT INTO cliente 
+    <insert id="agregarCliente" 
+        parameterType="pojo.Cliente"
+        useGeneratedKeys="true" 
+        keyProperty="idCliente">  
+        INSERT INTO cliente  
         (nombre, apellidoPaterno, apellidoMaterno, calle, numeroDeCasa, colonia, codigoPostal, idCiudad, telefono, correo)
-        VALUES 
+        VALUES  
         (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{calle}, #{numeroDeCasa}, #{colonia}, #{cp}, #{idCiudad}, #{telefono}, #{correo});
     </insert>
     
