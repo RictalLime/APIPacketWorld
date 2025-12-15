@@ -7,7 +7,7 @@ import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Envio;
 import pojo.EstadoDeEnvio;
-import pojo.HistorialDeEnvio; // Importante para el historial
+import pojo.HistorialDeEnvio;
 import dto.Mensaje;
 
 public class EnvioImp {
@@ -15,29 +15,43 @@ public class EnvioImp {
     // ------------------------------------
     // OBTENER ENVÍOS POR NÚMERO DE GUÍA (RASTREO WEB)
     // ------------------------------------
-    public static List<Envio> obtenerEnviosPorNoGuia(String noGuia) {
+    public static List<Envio> getObtenerEnviosPorNoGuia(String noGuia) {
         List<Envio> envios = new ArrayList<>();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
 
+        // --- DIAGNÓSTICO: Esto saldrá en la consola de NetBeans ---
+        System.out.println("==================================================");
+        System.out.println("[DEBUG] Buscando guía: '" + noGuia + "'");
+        
         if (conexionBD != null) {
             try {
-                // 1. CORRECCIÓN DE NAMESPACE: Debe coincidir con el XML (mybatis.mapper.EnvioMapper)
-                envios = conexionBD.selectList("mybatis.mapper.EnvioMapper.obtenerEnviosPorNoGuia", noGuia);
+                // 1. Ejecutar consulta
+                envios = conexionBD.selectList("mybatis.mapper.EnvioMapper.getObtenerEnviosPorNoGuia", noGuia);
                 
-                // 2. CARGA DE HISTORIAL: Fundamental para que la web muestre la línea de tiempo
-                for (Envio envio : envios) {
-                    if (envio != null) {
-                        // Llamamos al Imp de Historial que ya tienes creado
+                System.out.println("[DEBUG] Resultados encontrados en BD: " + (envios != null ? envios.size() : "null"));
+
+                // 2. Cargar historial
+                if (envios != null && !envios.isEmpty()) {
+                    for (Envio envio : envios) {
+                        System.out.println("[DEBUG] Envio encontrado ID: " + envio.getIdEnvio());
                         List<HistorialDeEnvio> historial = HistorialDeEnvioImp.obtenerHistorial(noGuia);
                         envio.setHistorial(historial);
+                        envio.setPaquetes(new ArrayList<>()); // Inicializamos paquetes vacío para evitar nulls en el front
                     }
+                } else {
+                    System.out.println("[DEBUG] La lista regresó vacía. Verifica que el No. Guía sea IDÉNTICO en la BD.");
                 }
+
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("[ERROR CRÍTICO] Excepción en MyBatis: ");
+                e.printStackTrace(); // Esto imprimirá el error real si el Mapper está mal
             } finally {
                 conexionBD.close();
             }
+        } else {
+            System.err.println("[ERROR] No se pudo conectar a la Base de Datos. Revisa MyBatisConfig.xml");
         }
+        System.out.println("==================================================");
         return envios;
     }
 
@@ -69,8 +83,7 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
-                // CORRECCIÓN NAMESPACE
-                int resultado = conexionBD.insert("mybatis.mapper.EnvioMapper.registrarEnvio", envio); // Asegúrate que en el XML el ID sea 'registrarEnvio' o ajusta aquí
+                int resultado = conexionBD.insert("mybatis.mapper.EnvioMapper.registrar", envio);
                 conexionBD.commit();
 
                 if (resultado > 0) {
@@ -102,8 +115,7 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
-                // Asumiendo que crearás un update con id 'editarEnvio' en el XML
-                int resultado = conexionBD.update("mybatis.mapper.EnvioMapper.editarEnvio", envio);
+                int resultado = conexionBD.update("mybatis.mapper.EnvioMapper.editar", envio);
                 conexionBD.commit();
 
                 if (resultado > 0) {
@@ -135,8 +147,7 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
-                // Asumiendo id 'eliminarEnvio' en el XML
-                int resultado = conexionBD.delete("mybatis.mapper.EnvioMapper.eliminarEnvio", idEnvio);
+                int resultado = conexionBD.delete("mybatis.mapper.EnvioMapper.eliminar", idEnvio);
                 conexionBD.commit();
 
                 if (resultado > 0) {
@@ -165,7 +176,6 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
-                // Nota: Esto requiere que EstadoEnvioMapper.xml tenga el namespace correcto
                 listaEstados = conexionBD.selectList("mybatis.mapper.EstadoEnvioMapper.obtenerTodos");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -185,8 +195,8 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
-                // Asumiendo id 'obtenerEnviosConductor' en el XML
-                listaEnvios = conexionBD.selectList("mybatis.mapper.EnvioMapper.obtenerEnviosConductor", idColaborador);
+                // NOTA: Verifica que en EnvioMapper.xml tengas este ID
+                listaEnvios = conexionBD.selectList("mybatis.mapper.EnvioMapper.getObtenerEnviosConductor", idColaborador);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -205,7 +215,6 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
-                // Asumiendo id 'actualizarEstado' en el XML
                 int resultado = conexionBD.update("mybatis.mapper.EnvioMapper.actualizarEstado", envio); 
                 conexionBD.commit();
 

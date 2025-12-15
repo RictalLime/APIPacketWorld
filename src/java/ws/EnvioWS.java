@@ -2,7 +2,8 @@ package ws;
 
 import Utilidades.Constantes;
 import dominio.EnvioImp; 
-import dominio.CiudadImp; // Importación necesaria para la validación
+import dominio.CiudadImp; // Importación para la validación de Ciudad
+import dominio.EstadoImp; // Importación necesaria para la validación de Estado
 import java.util.List;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.DELETE;
@@ -19,8 +20,8 @@ import pojo.EstadoDeEnvio;
 import dto.Mensaje;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
-import pojo.Ciudad; // Necesario para la validación de ID de ciudad
-
+import pojo.Ciudad; 
+import pojo.Estado; // Importación necesaria para el POJO Estado
 
 @Path("envio")
 public class EnvioWS {
@@ -38,7 +39,7 @@ public class EnvioWS {
             throw new BadRequestException("El ID del Envío o el ID del Estado son inválidos.");
         }
         
-        // Llama al método que ya implementaste en EnvioImp.java
+        // Llama al método en EnvioImp.java
         return EnvioImp.actualizarEstadoEnvio(envio); 
     }
     
@@ -54,9 +55,9 @@ public class EnvioWS {
     @Path("obtener-envios-por-noguia/{noGuia}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public static List<Envio> obtenerEnviosPorNoGuia(@PathParam("noGuia") String noGuia) {
+    public static List<Envio> getObtenerEnviosPorNoGuia(@PathParam("noGuia") String noGuia) {
         if(noGuia!=null && !noGuia.isEmpty()){
-            return EnvioImp.obtenerEnviosPorNoGuia(noGuia);
+            return EnvioImp.getObtenerEnviosPorNoGuia(noGuia);
         }
         throw new BadRequestException("El número de guía es inválido.");
     }
@@ -86,8 +87,9 @@ public class EnvioWS {
             throw new BadRequestException("Los datos del envío son inválidos o están vacíos.");
         }
         
+        // El método validarEnvio ahora verifica los IDs de Ciudad y Estado
         if (validarEnvio(envio)) {
-            throw new BadRequestException("Datos del envío inválidos. Verifique IDs de Cliente, Colaborador, Estado o Ciudades.");
+            throw new BadRequestException("Datos del envío inválidos. Verifique IDs de Cliente, Colaborador, Estado, Ciudades y Estados de Origen/Destino.");
         }
         
         return EnvioImp.registrarEnvio(envio);
@@ -102,8 +104,9 @@ public class EnvioWS {
             throw new BadRequestException("Los datos del envío o su ID son inválidos.");
         }
         
+        // El método validarEnvio ahora verifica los IDs de Ciudad y Estado
         if (validarEnvio(envio)) {
-            throw new BadRequestException("Datos del envío inválidos. Verifique IDs de Cliente, Colaborador, Estado o Ciudades.");
+            throw new BadRequestException("Datos del envío inválidos. Verifique IDs de Cliente, Colaborador, Estado, Ciudades y Estados de Origen/Destino.");
         }
         
         return EnvioImp.editarEnvio(envio);
@@ -121,12 +124,18 @@ public class EnvioWS {
         return EnvioImp.eliminarEnvio(idEnvio);
     }
     
-    // --- MÉTODO DE VALIDACIÓN ---
+    // --- MÉTODO DE VALIDACIÓN (MODIFICADO) ---
     
+    /**
+     * Valida los campos esenciales y verifica la existencia de las claves foráneas (FKs) 
+     * de Ciudad y ESTADO en la base de datos.
+     * @param envio El objeto Envio a validar.
+     * @return true si se encuentra un error, false si la validación es exitosa.
+     */
     private boolean validarEnvio(Envio envio) {
         boolean error = false;
         
-        // 1. Validación de campos esenciales (no vacíos/nulos)
+        // 1. Validación de IDs esenciales
         if (envio.getIdCliente() == null || envio.getIdCliente() <= 0) {
             error = true;
         }
@@ -137,32 +146,54 @@ public class EnvioWS {
             error = true;
         }
         
-        // 2. Validación de ID de Ciudad Origen (Clave Foránea)
-        if (envio.getIdCiudadOrigen() == null || envio.getIdCiudadOrigen() <= 0) {
+        // 2. Validación de Origen (Ciudad y Estado)
+        
+        // 2a. Validar ID de Ciudad Origen
+        if (envio.getIdOrigenCiudad() == null || envio.getIdOrigenCiudad() <= 0) {
             error = true;
         } else {
-            Ciudad ciudadOrigen = CiudadImp.obtenerCiudadPorId(envio.getIdCiudadOrigen());
+            Ciudad ciudadOrigen = CiudadImp.obtenerCiudadPorId(envio.getIdOrigenCiudad());
             if (ciudadOrigen == null) {
                  error = true;
             }
         }
         
-        // 3. Validación de ID de Ciudad Destino (Clave Foránea)
-        if (envio.getIdCiudadDestino() == null || envio.getIdCiudadDestino() <= 0) {
+        // 2b. Validar ID de Estado de Origen (NUEVO)
+        if (envio.getIdOrigenEstado() == null || envio.getIdOrigenEstado() <= 0) {
             error = true;
         } else {
-            Ciudad ciudadDestino = CiudadImp.obtenerCiudadPorId(envio.getIdCiudadDestino());
+            Estado estadoOrigen = EstadoImp.obtenerEstadoPorId(envio.getIdOrigenEstado());
+            if (estadoOrigen == null) {
+                error = true;
+            }
+        }
+        
+        // 3. Validación de Destino (Ciudad y Estado)
+        
+        // 3a. Validar ID de Ciudad Destino
+        if (envio.getIdDestinoCiudad() == null || envio.getIdDestinoCiudad() <= 0) {
+            error = true;
+        } else {
+            Ciudad ciudadDestino = CiudadImp.obtenerCiudadPorId(envio.getIdDestinoCiudad());
             if (ciudadDestino == null) {
                  error = true;
             }
         }
+        
+        // 3b. Validar ID de Estado de Destino (NUEVO)
+        if (envio.getIdDestinoEstado() == null || envio.getIdDestinoEstado() <= 0) {
+            error = true;
+        } else {
+            Estado estadoDestino = EstadoImp.obtenerEstadoPorId(envio.getIdDestinoEstado());
+            if (estadoDestino == null) {
+                error = true;
+            }
+        }
 
-        // 4. Validación de campos de dirección de texto (ejemplo: no vacíos)
+        // 4. Validación de campos de dirección de texto
         if (envio.getOrigenCalle() == null || envio.getOrigenCalle().trim().isEmpty()) error = true;
         if (envio.getOrigenNumero() == null || envio.getOrigenNumero().trim().isEmpty()) error = true;
         if (envio.getDestinoCalle() == null || envio.getDestinoCalle().trim().isEmpty()) error = true;
-        
-        // *Se pueden añadir más validaciones de formato (REGEX) para CP, noGuia, etc. aquí*
         
         return error;
     }
