@@ -114,9 +114,9 @@
             apellidoMaterno = #{apellidoMaterno},
             curp = #{curp},
             correo = #{correo},
-            numeroDeLicencia = #{numeroDeLicencia},
+            noPersonal = #{noPersonal}, idRol = #{idRol},           numeroDeLicencia = #{numeroDeLicencia},
             contrasena = #{contrasena}  
-        WHERE noPersonal = #{noPersonal};
+        WHERE idColaborador = #{idColaborador}; 
     </update>
 
 

@@ -1,5 +1,7 @@
 package pojo;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Clase Cliente - Adaptada a la normalización de Ubicación.
  */
@@ -17,6 +19,7 @@ public class Cliente {
     private String calle;
     private String numeroDeCasa;
     private String colonia;
+   @SerializedName("codigoPostal")
     private String cp; // Código Postal
     
     // ATRIBUTOS DE UBICACIÓN (NORMALIZADOS)
@@ -98,12 +101,8 @@ public class Cliente {
     public void setCp(String cp) {
         this.cp = cp;
     }
-    public String getCodigoPostal() { // Se mantiene para compatibilidad con el campo antiguo si es necesario
-        return cp;
-    }
-    public void setCodigoPostal(String codigoPostal) {
-        this.cp = codigoPostal;
-    }
+
+
 
     // Contacto
     public String getTelefono() {

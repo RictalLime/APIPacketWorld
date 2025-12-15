@@ -174,34 +174,52 @@ public class ClienteImp {
     // ELIMINAR CLIENTE
     // ------------------------------------
     public static Mensaje eliminarCliente(Integer idCliente) {
-        Mensaje respuesta = new Mensaje();
-        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        if (conexionBD != null) {
-            try {
-                HashMap<String, Integer> parametros = new LinkedHashMap<>();
-                parametros.put("idCliente", idCliente);
-                int filasAfectadas = conexionBD.delete("cliente.eliminarCliente", parametros);
-                conexionBD.commit();
-                if (filasAfectadas > 0) {
-                    respuesta.setError(false);
-                    respuesta.setMensaje("Cliente eliminado exitosamente.");
-                } else {
-                    respuesta.setError(true);
-                    respuesta.setMensaje("No se encontró el Cliente para eliminar.");
-                }
-            } catch (Exception e) {
-                conexionBD.rollback();
+    Mensaje respuesta = new Mensaje();
+    // Intenta usar try-with-resources si tu versión de Java/MyBatis lo soporta para un cierre automático
+    SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+    
+    if (conexionBD != null) {
+        try {
+            // --- CAMBIO CLAVE: Pasar el Integer directamente ---
+            // 1. ELIMINAMOS el HashMap innecesario
+            // 2. PASAMOS el idCliente directamente al método delete
+            //    MyBatis lo mapeará usando #{param1} o #{value}
+            
+            int filasAfectadas = conexionBD.delete("cliente.eliminarCliente", idCliente); // Se pasa el Integer
+            conexionBD.commit();
+            
+            if (filasAfectadas > 0) {
+                respuesta.setError(false);
+                respuesta.setMensaje("Cliente eliminado exitosamente.");
+            } else {
                 respuesta.setError(true);
-                respuesta.setMensaje("Error al eliminar el Cliente: " + e.getMessage());
-            } finally {
-                if (conexionBD != null) {
-                    conexionBD.close();
-                }
+                respuesta.setMensaje("No se encontró el Cliente con ID " + idCliente + " para eliminar.");
             }
-        } else {
+            
+        } catch (Exception e) {
+            conexionBD.rollback();
             respuesta.setError(true);
-            respuesta.setMensaje(Constantes.MSJ_ERROR_BD);
+            
+            // Mejorar el mensaje de error para depuración
+            String errorMsg = "Error al eliminar el Cliente. Causa: ";
+            if (e.getMessage() != null && e.getMessage().contains("foreign key constraint fails")) {
+                 errorMsg += "Restricción de Clave Foránea. El cliente tiene registros asociados en otras tablas.";
+            } else {
+                 errorMsg += e.getMessage();
+            }
+            respuesta.setMensaje(errorMsg);
+            System.err.println("Excepción al eliminar cliente: " + e.getMessage()); // Imprimir en consola de servidor
+            
+        } finally {
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
-        return respuesta;
+    } else {
+        respuesta.setError(true);
+        // Asumiendo que Constantes.MSJ_ERROR_BD existe
+        respuesta.setMensaje(Constantes.MSJ_ERROR_BD); 
     }
+    return respuesta;
+}
 }
