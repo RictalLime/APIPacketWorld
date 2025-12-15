@@ -36,6 +36,7 @@ public class ApplicationConfig extends Application {
         resources.add(ws.HistorialDeBajaWS.class);
         resources.add(ws.HistorialDeEnvioWS.class);
         resources.add(ws.LoginWS.class);
+        resources.add(ws.PaqueteWS.class);
         resources.add(ws.RolWS.class);
         resources.add(ws.SucursalWS.class);
         resources.add(ws.UnidadWS.class);
