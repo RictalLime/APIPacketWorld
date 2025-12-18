@@ -66,9 +66,10 @@
         WHERE idCliente = #{idCliente};
     </update>
     
-    <delete id="eliminarCliente" parameterType="Integer">
+    <delete id="eliminarCliente" parameterType="int">
         DELETE FROM cliente
         WHERE idCliente = #{idCliente};
     </delete>
+
     
 </mapper>

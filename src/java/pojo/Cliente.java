@@ -36,6 +36,7 @@ public class Cliente {
      */
     private String nombreCiudad;
     
+    private Integer idEstado;
     /**
      * Campo de Lectura: Nombre del estado obtenido vía JOIN.
      * Usado para SELECT.
@@ -139,5 +140,13 @@ public class Cliente {
     }
     public void setNombreEstado(String nombreEstado) {
         this.nombreEstado = nombreEstado;
+    }
+
+    public Integer getIdEstado() {
+        return idEstado;
+    }
+
+    public void setIdEstado(Integer idEstado) {
+        this.idEstado = idEstado;
     }
 }
