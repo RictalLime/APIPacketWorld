@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pojo;
 
 /**
@@ -19,13 +15,22 @@ public class Sucursal {
     private String numero;
     private String colonia;
     private String codigoPostal;
-    private String ciudad;
-    private String estado;
+    
+    // ==============================================
+    // ¡CAMPOS DE CLAVE FORÁNEA AGREGADOS PARA EL INSERT!
+    // MyBatis los necesita para las columnas idCiudad e idEstado
+    private Integer idCiudad; 
+    private Integer idEstado;
+    // ==============================================
+    
+    private String ciudad;   // Nombre de la Ciudad (para SELECT y mostrar)
+    private String estado;   // Nombre del Estado (para SELECT y mostrar)
 
     public Sucursal() {
     }
 
-    public Sucursal(Integer idSucursal, String codigoSucursal, String nombre, String estatus, String calle, String numero, String colonia, String codigoPostal, String ciudad, String estado) {
+    // Constructor completo
+    public Sucursal(Integer idSucursal, String codigoSucursal, String nombre, String estatus, String calle, String numero, String colonia, String codigoPostal, Integer idCiudad, Integer idEstado, String ciudad, String estado) {
         this.idSucursal = idSucursal;
         this.codigoSucursal = codigoSucursal;
         this.nombre = nombre;
@@ -34,9 +39,13 @@ public class Sucursal {
         this.numero = numero;
         this.colonia = colonia;
         this.codigoPostal = codigoPostal;
+        this.idCiudad = idCiudad;
+        this.idEstado = idEstado;
         this.ciudad = ciudad;
         this.estado = estado;
     }
+    
+    // --- GETTERS ---
 
     public Integer getIdSucursal() {
         return idSucursal;
@@ -77,6 +86,19 @@ public class Sucursal {
     public String getEstado() {
         return estado;
     }
+    
+    // ==============================================
+    // ¡GETTERS PARA LOS IDs REQUERIDOS POR MYBATIS!
+    public Integer getIdCiudad() {
+        return idCiudad;
+    }
+
+    public Integer getIdEstado() {
+        return idEstado;
+    }
+    // ==============================================
+
+    // --- SETTERS ---
 
     public void setIdSucursal(Integer idSucursal) {
         this.idSucursal = idSucursal;
@@ -118,4 +140,14 @@ public class Sucursal {
         this.estado = estado;
     }
     
+    // ==============================================
+    // ¡SETTERS PARA LOS IDs REQUERIDOS POR MYBATIS!
+    public void setIdCiudad(Integer idCiudad) {
+        this.idCiudad = idCiudad;
+    }
+
+    public void setIdEstado(Integer idEstado) {
+        this.idEstado = idEstado;
+    }
+    // ==============================================
 }

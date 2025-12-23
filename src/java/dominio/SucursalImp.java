@@ -32,33 +32,52 @@ public class SucursalImp {
     }
 
     
-    public static Mensaje registrarSucursal(Sucursal sucursal){
-        Mensaje mensaje = new Mensaje();
-        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        if(conexionBD != null){
-            try {
-                int filasAfectadas = conexionBD.insert("sucursal.registrar", sucursal);
-                conexionBD.commit();
-                if(filasAfectadas == 1){
-                    mensaje.setError(false);
-                    mensaje.setMensaje("Registro de la sucursal"+sucursal.getNombre()+"Agregado correctamente");
-                }else{
-                    mensaje.setError(true);
-                    mensaje.setMensaje("Lo sentimos la informacion no pudo ser guardada.");
-                    conexionBD.close();
-                }
-            }catch (Exception e){
-                conexionBD.rollback();
-                mensaje.setError(true);
-                mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
-            }
-            conexionBD.close();
-        }else{
-            mensaje.setError(true);
-            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
-        }
+public static Mensaje registrarSucursal(Sucursal sucursal){
+    Mensaje mensaje = new Mensaje();
+    SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+    
+    // (A) MANEJO DEL FALLO DE CONEXIÓN
+    if(conexionBD == null){
+        mensaje.setError(true);
+        mensaje.setMensaje("No se pudo establecer conexión con la base de datos.");
         return mensaje;
     }
+    
+    // Si la conexión es válida, usamos try/catch/finally
+    try {
+        int filasAfectadas = conexionBD.insert("sucursal.registrar", sucursal);
+        
+        // (B) MANEJO DEL CIERRE: La sesión debe cerrarse en el finally
+        
+        if(filasAfectadas == 1){
+            conexionBD.commit();
+            mensaje.setError(false);
+            // Corregido error de concatenación:
+            mensaje.setMensaje("Registro de la sucursal "+sucursal.getNombre()+" agregado correctamente.");
+        }else{
+            conexionBD.rollback(); // Debe hacer rollback si no afecta filas
+            mensaje.setError(true);
+            mensaje.setMensaje("Lo sentimos, la información no pudo ser guardada (0 filas afectadas).");
+        }
+        
+    }catch (Exception e){
+        // (C) MANEJO DE ERROR SQL: Ahora se hace un mejor diagnóstico.
+        
+        conexionBD.rollback();
+        mensaje.setError(true);
+        // 1. Mostrar el mensaje real de la excepción (e.getMessage()) para diagnosticar
+        // 2. O usar un mensaje más apropiado:
+        mensaje.setMensaje("Error en la inserción de la sucursal: " + e.getMessage()); // <-- RECOMENDADO
+        // e.printStackTrace(); // Es bueno para el servidor, pero no para el cliente.
+        
+    } finally {
+        // (D) CIERRE SEGURO DE LA CONEXIÓN (se mueve aquí)
+        if (conexionBD != null) {
+            conexionBD.close(); 
+        }
+    }
+    return mensaje;
+}
     
     public static Mensaje editarSucursal(Sucursal sucursal){
         Mensaje mensaje = new Mensaje();
