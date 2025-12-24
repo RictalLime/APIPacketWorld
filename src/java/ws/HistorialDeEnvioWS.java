@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package ws;
+
 import dominio.HistorialEnvioImp;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,39 +20,39 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 import pojo.HistorialDeEnvio;
+import pojo.RespuestaRastreo; // <--- Importante: Importar el nuevo POJO
 import dto.Mensaje;
 
 @Path("historial-envio")
 public class HistorialDeEnvioWS {
     
+    // Este endpoint mantiene la compatibilidad por si lo usas en un panel admin
     @Path("obtener-todos")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<HistorialDeEnvio> obtenerHistorialEnvio() {
-        List<HistorialDeEnvio> lista = new ArrayList<>();
-        lista = HistorialEnvioImp.obtenerTodos();
-        
-        return lista;
+        return HistorialEnvioImp.obtenerTodos();
     }
     
-    
-@Path("obtener-historial/{noGuia}")
-@GET
-@Produces(MediaType.APPLICATION_JSON)
-public List<HistorialDeEnvio> obtenerHistorialPorNoGuia(@PathParam("noGuia") String noGuia) {
-    System.out.println("Número de guía recibido: " + noGuia);
+    // --- ENDPOINT ACTUALIZADO PARA EL RASTREO PÚBLICO ---
+    // Ahora retorna 'RespuestaRastreo' en lugar de 'List<HistorialDeEnvio>'
+    @Path("obtener-historial/{noGuia}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public RespuestaRastreo obtenerRastreoPorNoGuia(@PathParam("noGuia") String noGuia) {
+        System.out.println("Número de guía recibido para rastreo completo: " + noGuia);
 
-    if (noGuia != null && !noGuia.isEmpty()) {
-        List<HistorialDeEnvio> lista = HistorialEnvioImp.obtenerHistorialPorNoGuia(noGuia);
-       
+        if (noGuia != null && !noGuia.isEmpty()) {
+            // Llamamos al nuevo método orquestador
+            RespuestaRastreo respuesta = HistorialEnvioImp.obtenerRastreoCompleto(noGuia);
 
-        if (lista == null || lista.isEmpty()) {
-            throw new NotFoundException("No se encontraron registros para el número de guía: " + noGuia);
+            if (respuesta == null) {
+                throw new NotFoundException("No se encontró información para la guía: " + noGuia);
+            }
+            return respuesta;
         }
-        return lista;
+        throw new BadRequestException("El número de guía proporcionado es inválido.");
     }
-    throw new BadRequestException("El número de guía proporcionado es inválido.");
-}
     
     @Path("agregar")
     @POST
