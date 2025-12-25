@@ -4,11 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/MyBatisConfig.xml</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/MyBatisUtil.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/Envio.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/EnvioImp.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/EnvioMapper.xml</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/HistorialDeEnvio.xml</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/EnvioWS.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/HistorialDeBajaWS.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/CiudadImp.java</file>
@@ -27,22 +24,11 @@
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/ConductorAsignadoMapper.xml</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/EstadoDeEnvioMapper.xml</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/EstadoMapper.xml</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/RolMapper.xml</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/PaqueteWS.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/RolWS.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/ApplicationConfig.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/UnidadWS.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/SucursalWS.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/Ciudad.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/EstadoImp.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/HistorialDeEnvioWS.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/LoginWS.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dto/Mensaje.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/LoginImp.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/HistorialDeEnvio.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/HistorialDeEnvioMapper.xml</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/RespuestaRastreo.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/EstadoUnidad.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/PaqueteMapper.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/PaqueteImp.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/Paquete.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/Envio.java</file>
         </group>
     </open-files>
 </project-private>

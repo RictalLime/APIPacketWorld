@@ -48,14 +48,14 @@ public class EnvioWS {
     @Path("obtener-envios")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public static List<Envio> obtenerEnvios() {
+    public List<Envio> obtenerEnvios() {
         return EnvioImp.obtenerEnvios();
     }
     
-    @Path("obtener-envios-por-noguia/{noGuia}")
+    @Path("rastreo/{noGuia}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public static List<Envio> getObtenerEnviosPorNoGuia(@PathParam("noGuia") String noGuia) {
+    public List<Envio> ObtenerEnviosPorNoGuia(@PathParam("noGuia") String noGuia) {
         if(noGuia!=null && !noGuia.isEmpty()){
             return EnvioImp.getObtenerEnviosPorNoGuia(noGuia);
         }
@@ -65,14 +65,14 @@ public class EnvioWS {
     @Path("obtener-estados-envios")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public static List<EstadoDeEnvio> obtenerEstadosEnvios() {
+    public List<EstadoDeEnvio> obtenerEstadosEnvios() {
         return EnvioImp.obtenerEstadosDeEnvios();
     }
     
     @Path("obtener-envios-conductor/{idColaborador}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public static List<Envio> obtenerEnvioConductor(@PathParam("idColaborador") int idColaborador){
+    public List<Envio> obtenerEnvioConductor(@PathParam("idColaborador") int idColaborador){
         return EnvioImp.obtenerEnviosConductor(idColaborador);
     }
 

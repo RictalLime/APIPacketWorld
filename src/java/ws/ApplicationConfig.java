@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ws;
 
 import java.util.Set;
-import javax.ws.rs.core.Application;
-
+import javax.ws.rs.core.Application; // <--- ESTE ES EL IMPORT CORRECTO
 
 @javax.ws.rs.ApplicationPath("api")
-public class ApplicationConfig extends Application {
+public class ApplicationConfig extends Application { // <--- Hereda de javax.ws.rs.core.Application
 
     @Override
     public Set<Class<?>> getClasses() {
@@ -25,7 +19,7 @@ public class ApplicationConfig extends Application {
      * all resources defined in the project.
      * If required, comment out calling this method in getClasses().
      */
-     private void addRestResourceClasses(Set<Class<?>> resources) {
+    private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ws.CiudadWS.class);
         resources.add(ws.ClienteWS.class);
         resources.add(ws.ColaboradorWS.class);
@@ -38,8 +32,7 @@ public class ApplicationConfig extends Application {
         resources.add(ws.LoginWS.class);
         resources.add(ws.PaqueteWS.class);
         resources.add(ws.RolWS.class);
-        resources.add(ws.SucursalWS.class);
+        resources.add(ws.SucursalWS.class); // Asegúrate de que esta clase exista, si no, coméntala
         resources.add(ws.UnidadWS.class);
-
-     }
+    }
 }

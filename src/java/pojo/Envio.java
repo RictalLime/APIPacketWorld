@@ -54,8 +54,11 @@ public class Envio {
     private String nombreCiudadDestino; 
     private String nombreEstadoDestino; // Viene del JOIN (Nuevo)
     
+    private Integer idSucursal;
+    
     private List<HistorialDeEnvio> historial;
     private List<Paquete> paquetes;
+
     
     // ==========================================================
     // CONSTRUCTORES
@@ -70,7 +73,7 @@ public class Envio {
     /**
      * Constructor Sobrecargado (con todos los parámetros)
      */
-    public Envio(Integer idEnvio, Integer idCliente, String cliente, Integer idColaborador, String colaborador, String noGuia, float costoDeEnvio, Integer idEstadoDeEnvio, String estadoDeEnvio, Integer idOrigenCiudad, Integer idOrigenEstado, String origen, String origenCalle, String origenNumero, String origenColonia, String origenCodigoPostal, String nombreCiudadOrigen, String nombreEstadoOrigen, Integer idDestinoCiudad, Integer idDestinoEstado, String destino, String destinoCalle, String destinoNumero, String destinoColonia, String destinoCodigoPostal, String nombreCiudadDestino, String nombreEstadoDestino) {
+    public Envio(Integer idEnvio, Integer idCliente, String cliente, Integer idColaborador, String colaborador, String noGuia, float costoDeEnvio, Integer idEstadoDeEnvio, String estadoDeEnvio, Integer idOrigenCiudad, Integer idOrigenEstado, String origen, String origenCalle, String origenNumero, String origenColonia, String origenCodigoPostal, String nombreCiudadOrigen, String nombreEstadoOrigen, Integer idDestinoCiudad, Integer idDestinoEstado, String destino, String destinoCalle, String destinoNumero, String destinoColonia, String destinoCodigoPostal, String nombreCiudadDestino, String nombreEstadoDestino, Integer idSucursal) {
         this.idEnvio = idEnvio;
         this.idCliente = idCliente;
         this.cliente = cliente;
@@ -102,6 +105,7 @@ public class Envio {
         this.destinoCodigoPostal = destinoCodigoPostal;
         this.nombreCiudadDestino = nombreCiudadDestino;
         this.nombreEstadoDestino = nombreEstadoDestino;
+        this.idSucursal = idSucursal;
     }
     
     // ==========================================================
@@ -139,10 +143,10 @@ public class Envio {
     public String getDestinoCodigoPostal() { return destinoCodigoPostal; }
     public String getNombreCiudadDestino() { return nombreCiudadDestino; } 
     public String getNombreEstadoDestino() { return nombreEstadoDestino; } // Nuevo Getter
+    public Integer getIdSucursal() { return idSucursal;}
     
     public List<HistorialDeEnvio> getHistorial() { return historial; }
     public List<Paquete> getPaquetes() { return paquetes; }
-
 
     // ==========================================================
     // SETTERS
@@ -179,6 +183,7 @@ public class Envio {
     public void setDestinoCodigoPostal(String destinoCodigoPostal) { this.destinoCodigoPostal = destinoCodigoPostal; }
     public void setNombreCiudadDestino(String nombreCiudadDestino) { this.nombreCiudadDestino = nombreCiudadDestino; }
     public void setNombreEstadoDestino(String nombreEstadoDestino) { this.nombreEstadoDestino = nombreEstadoDestino; } // Nuevo Setter
+    public void setIdSucursal(Integer idSucursal) {this.idSucursal = idSucursal;}
     
     public void setHistorial(List<HistorialDeEnvio> historial) { this.historial = historial; }
     public void setPaquetes(List<Paquete> paquetes) { this.paquetes = paquetes; }

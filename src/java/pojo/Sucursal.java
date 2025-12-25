@@ -19,13 +19,15 @@ public class Sucursal {
     private String numero;
     private String colonia;
     private String codigoPostal;
+    private Integer idCiudad;
     private String ciudad;
+    private Integer idEstado;
     private String estado;
 
     public Sucursal() {
     }
 
-    public Sucursal(Integer idSucursal, String codigoSucursal, String nombre, String estatus, String calle, String numero, String colonia, String codigoPostal, String ciudad, String estado) {
+    public Sucursal(Integer idSucursal, String codigoSucursal, String nombre, String estatus, String calle, String numero, String colonia, String codigoPostal, Integer idCiudad, String ciudad, Integer idEstado, String estado) {
         this.idSucursal = idSucursal;
         this.codigoSucursal = codigoSucursal;
         this.nombre = nombre;
@@ -34,7 +36,9 @@ public class Sucursal {
         this.numero = numero;
         this.colonia = colonia;
         this.codigoPostal = codigoPostal;
+        this.idCiudad = idCiudad;
         this.ciudad = ciudad;
+        this.idEstado = idEstado;
         this.estado = estado;
     }
 
@@ -70,8 +74,16 @@ public class Sucursal {
         return codigoPostal;
     }
 
+    public Integer getIdCiudad() {
+        return idCiudad;
+    }
+
     public String getCiudad() {
         return ciudad;
+    }
+
+    public Integer getIdEstado() {
+        return idEstado;
     }
 
     public String getEstado() {
@@ -110,12 +122,19 @@ public class Sucursal {
         this.codigoPostal = codigoPostal;
     }
 
+    public void setIdCiudad(Integer idCiudad) {
+        this.idCiudad = idCiudad;
+    }
+
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
+    }
+
+    public void setIdEstado(Integer idEstado) {
+        this.idEstado = idEstado;
     }
 
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
 }

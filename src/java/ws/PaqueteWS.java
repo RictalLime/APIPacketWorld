@@ -46,14 +46,16 @@ public class PaqueteWS {
        return PaqueteImp.obtenerPaquetes();
     }
     
-    @Path("obtener-paquetes-noguia/{noGuia}")
+    // CORRECCIÓN: Devuelve OBJETO (Paquete), no List<Paquete>
+    @Path("obtener-paquete-por-noguia/{noGuia}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Paquete> obtenerPaquetesPorNoGuia(@PathParam("noGuia") String noGuia) {
-       if(noGuia!=null && !noGuia.isEmpty()){
-           return PaqueteImp.obtenerPaquetesPorNoGuia(noGuia);
-       }
-       throw new BadRequestException();
+    public Paquete obtenerPaquetePorNoGuia(@PathParam("noGuia") String noGuia) {
+        if(noGuia != null && !noGuia.isEmpty()){
+            // PaqueteImp retorna un objeto, y aquí el WS retorna un objeto. ¡Tipos compatibles!
+            return PaqueteImp.obtenerPaquetePorNoGuia(noGuia);
+        }
+        throw new BadRequestException("Número de guía inválido");
     }
 
     @Path("agregar-paquete")
@@ -64,7 +66,7 @@ public class PaqueteWS {
         if (paquete == null) {
             throw new BadRequestException("Los datos del paquete son inválidos o están vacíos.");
         }
-        return PaqueteImp.registrarPaquete(paquete);
+        return PaqueteImp.registrar(paquete);
     }
 
     @Path("editar-paquete")
@@ -75,7 +77,7 @@ public class PaqueteWS {
         if (paquete == null) {
             throw new BadRequestException("Los datos del paquete son inválidos o están vacíos.");
         }
-        return PaqueteImp.editarPaquete(paquete);
+        return PaqueteImp.editar(paquete);
     }
 
     @Path("eliminar-paquete/{idPaquete}")
@@ -85,6 +87,6 @@ public class PaqueteWS {
         if (idPaquete <= 0) {
             throw new BadRequestException("El idPaquete debe ser mayor que 0.");
         }
-        return PaqueteImp.eliminarPaquete(idPaquete);
+        return PaqueteImp.eliminar(idPaquete);
     }
 }

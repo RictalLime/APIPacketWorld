@@ -2,27 +2,55 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mybatis.mapper.HistorialDeEnvioMapper">
 
+    <resultMap id="mapaHistorial" type="pojo.HistorialDeEnvio">
+        <id property="idHistorialDeEnvio" column="idHistorialDeEnvio" />
+        <result property="noGuia" column="noGuia" />
+        <result property="idColaborador" column="idColaborador" />
+        <result property="idEstadoDeEnvio" column="idEstadoDeEnvio" />
+        <result property="nombreEstado" column="nombreEstado" />
+        <result property="motivo" column="motivo" />
+        <result property="tiempoDeCambio" column="tiempoDeCambio" />
+    </resultMap>
+
+    <!-- INSERTAR (Usado para registrar cambios) -->
     <insert id="registrarCambioEstatus" parameterType="pojo.HistorialDeEnvio">
         INSERT INTO historialDeEnvio 
             (idEstadoDeEnvio, idColaborador, noGuia, motivo, tiempoDeCambio)
         VALUES 
-            (#{idEstadoDeEnvio}, #{idColaborador}, #{noGuia}, #{motivo}, NOW());
+            (#{idEstadoDeEnvio}, #{idColaborador}, #{noGuia}, #{motivo}, NOW())
     </insert>
 
-    <!-- Hacemos JOIN para traer el nombre del estado (ej. "En tránsito") -->
-    <select id="obtenerHistorialPorEnvio" resultType="pojo.HistorialDeEnvio" parameterType="String">
+    <!-- CONSULTA ESPECÍFICA (Para Rastreo Web) -->
+    <!-- Recupera el historial de UNA guía con el nombre del estado -->
+    <select id="obtenerHistorialPorEnvio" resultMap="mapaHistorial" parameterType="String">
         SELECT 
             h.idHistorialDeEnvio,
             h.noGuia,
             h.idColaborador,
             h.idEstadoDeEnvio,
-            e.nombre AS nombreEstado,
+            IFNULL(e.nombre, 'Estado Desconocido') AS nombreEstado,
             h.motivo,
             DATE_FORMAT(h.tiempoDeCambio, '%Y-%m-%d %H:%i:%s') AS tiempoDeCambio
         FROM historialDeEnvio h
-        INNER JOIN estadoDeEnvio e ON h.idEstadoDeEnvio = e.idEstadoDeEnvio
+        LEFT JOIN estadoDeEnvio e ON h.idEstadoDeEnvio = e.idEstadoDeEnvio
         WHERE h.noGuia = #{noGuia}
-        ORDER BY h.tiempoDeCambio DESC;
+        ORDER BY h.tiempoDeCambio DESC
+    </select>
+
+    <!-- CONSULTA GENERAL (Recuperada del archivo viejo, adaptada) -->
+    <!-- Útil si necesitas ver todo el historial del sistema -->
+    <select id="obtenerTodos" resultMap="mapaHistorial">
+        SELECT 
+            h.idHistorialDeEnvio,
+            h.noGuia,
+            h.idColaborador,
+            h.idEstadoDeEnvio,
+            IFNULL(e.nombre, 'Estado Desconocido') AS nombreEstado,
+            h.motivo,
+            DATE_FORMAT(h.tiempoDeCambio, '%Y-%m-%d %H:%i:%s') AS tiempoDeCambio
+        FROM historialDeEnvio h
+        LEFT JOIN estadoDeEnvio e ON h.idEstadoDeEnvio = e.idEstadoDeEnvio
+        ORDER BY h.tiempoDeCambio DESC
     </select>
 
 </mapper>
