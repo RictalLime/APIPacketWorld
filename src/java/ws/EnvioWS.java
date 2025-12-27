@@ -49,7 +49,7 @@ public class EnvioWS {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Envio> obtenerEnvios() {
-        return EnvioImp.obtenerEnvios();
+        return EnvioImp.obtenerTodos();
     }
     
     @Path("rastreo/{noGuia}")
@@ -92,7 +92,7 @@ public class EnvioWS {
             throw new BadRequestException("Datos del envío inválidos. Verifique IDs de Cliente, Colaborador, Estado, Ciudades y Estados de Origen/Destino.");
         }
         
-        return EnvioImp.registrarEnvio(envio);
+        return EnvioImp.registrar(envio);
     }
 
     @Path("editar-envio")
@@ -109,7 +109,7 @@ public class EnvioWS {
             throw new BadRequestException("Datos del envío inválidos. Verifique IDs de Cliente, Colaborador, Estado, Ciudades y Estados de Origen/Destino.");
         }
         
-        return EnvioImp.editarEnvio(envio);
+        return EnvioImp.editar(envio);
     }
 
     // --- Servicio de ELIMINAR (DELETE) ---

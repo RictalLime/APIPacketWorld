@@ -6,13 +6,14 @@
         <id property="idHistorialDeEnvio" column="idHistorialDeEnvio" />
         <result property="noGuia" column="noGuia" />
         <result property="idColaborador" column="idColaborador" />
+        <result property="colaborador" column="nombreColaborador" /> 
         <result property="idEstadoDeEnvio" column="idEstadoDeEnvio" />
-        <result property="nombreEstado" column="nombreEstado" />
+        <result property="nombreEstado" column="nombreEstado" /> <!-- Importante para la vista -->
         <result property="motivo" column="motivo" />
         <result property="tiempoDeCambio" column="tiempoDeCambio" />
     </resultMap>
 
-    <!-- INSERTAR (Usado para registrar cambios) -->
+    <!-- Insertar nuevo movimiento -->
     <insert id="registrarCambioEstatus" parameterType="pojo.HistorialDeEnvio">
         INSERT INTO historialDeEnvio 
             (idEstadoDeEnvio, idColaborador, noGuia, motivo, tiempoDeCambio)
@@ -20,13 +21,14 @@
             (#{idEstadoDeEnvio}, #{idColaborador}, #{noGuia}, #{motivo}, NOW())
     </insert>
 
-    <!-- CONSULTA ESPECÍFICA (Para Rastreo Web) -->
-    <!-- Recupera el historial de UNA guía con el nombre del estado -->
+    <!-- Obtener historial por Guía (Usado en el Rastreo) -->
     <select id="obtenerHistorialPorEnvio" resultMap="mapaHistorial" parameterType="String">
         SELECT 
             h.idHistorialDeEnvio,
             h.noGuia,
             h.idColaborador,
+            -- Opcional: Si tienes tabla colaborador, haz JOIN para sacar el nombre
+            -- c.nombre as nombreColaborador, 
             h.idEstadoDeEnvio,
             IFNULL(e.nombre, 'Estado Desconocido') AS nombreEstado,
             h.motivo,
@@ -34,22 +36,6 @@
         FROM historialDeEnvio h
         LEFT JOIN estadoDeEnvio e ON h.idEstadoDeEnvio = e.idEstadoDeEnvio
         WHERE h.noGuia = #{noGuia}
-        ORDER BY h.tiempoDeCambio DESC
-    </select>
-
-    <!-- CONSULTA GENERAL (Recuperada del archivo viejo, adaptada) -->
-    <!-- Útil si necesitas ver todo el historial del sistema -->
-    <select id="obtenerTodos" resultMap="mapaHistorial">
-        SELECT 
-            h.idHistorialDeEnvio,
-            h.noGuia,
-            h.idColaborador,
-            h.idEstadoDeEnvio,
-            IFNULL(e.nombre, 'Estado Desconocido') AS nombreEstado,
-            h.motivo,
-            DATE_FORMAT(h.tiempoDeCambio, '%Y-%m-%d %H:%i:%s') AS tiempoDeCambio
-        FROM historialDeEnvio h
-        LEFT JOIN estadoDeEnvio e ON h.idEstadoDeEnvio = e.idEstadoDeEnvio
         ORDER BY h.tiempoDeCambio DESC
     </select>
 

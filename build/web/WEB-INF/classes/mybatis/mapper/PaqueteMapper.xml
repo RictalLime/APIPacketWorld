@@ -2,9 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="paquete">
+<!-- CAMBIO CRÍTICO: El namespace debe coincidir con la ruta completa que usas en Java -->
+<mapper namespace="mybatis.mapper.PaqueteMapper">
 
-    <select id="getPaquetesPorEnvio" resultType="pojo.Paquete">
+    <!-- CAMBIO CRÍTICO: El ID ahora coincide con la llamada en PaqueteImp -->
+    <select id="obtenerPaquetesPorEnvio" resultType="pojo.Paquete">
         SELECT 
             p.idPaquete, 
             p.idEnvio, 
@@ -20,8 +22,7 @@
         WHERE p.idEnvio = #{idEnvio};
     </select>
 
-    
-    <select id="getPaquetes" resultType="pojo.Paquete">
+    <select id="obtenerPaquetes" resultType="pojo.Paquete">
         SELECT 
             p.idPaquete, 
             p.idEnvio, 
@@ -36,7 +37,7 @@
         INNER JOIN envio e ON p.idEnvio = e.idEnvio;
     </select>
     
-    <select id="getPaquetePorNoGuia" resultType="pojo.Paquete">
+    <select id="obtenerPaquetePorNoGuia" resultType="pojo.Paquete">
         SELECT 
             p.idPaquete, 
             p.idEnvio, 
@@ -52,9 +53,7 @@
         WHERE e.noGuia = #{noGuia};
     </select>
 
-
-    
-     <insert id="registrar" parameterType="pojo.Paquete">
+    <insert id="registrar" parameterType="pojo.Paquete">
         INSERT INTO paquete (
             idEnvio, 
             descripcion, 
@@ -81,13 +80,11 @@
            ancho = #{ancho},
            profundidad = #{profundidad}
        WHERE idPaquete = #{idPaquete};
-       </update>
+    </update>
 
-    <delete id="eliminar" parameterType="java.lang.Integer">
-       DELETE FROM paquete
-       WHERE idPaquete = #{idPaquete};
-   </delete>
-  
-
+    <!-- Agregamos el delete que faltaba en tu archivo anterior -->
+    <delete id="eliminar" parameterType="int">
+        DELETE FROM paquete WHERE idPaquete = #{idPaquete}
+    </delete>
 
 </mapper>
