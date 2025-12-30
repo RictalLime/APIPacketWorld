@@ -124,6 +124,23 @@ public class EnvioWS {
         return EnvioImp.eliminarEnvio(idEnvio);
     }
     
+    @Path("ultimo-no-guia")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtenerUltimoNoGuia() {
+        try {
+            String ultimoNoGuia = EnvioImp.obtenerUltimoNoGuia();
+            if (ultimoNoGuia == null) {
+                // Si no hay registros, devolvemos GUI000 para que el cliente empiece en GUI001
+                ultimoNoGuia = "GUI000";
+            }
+            return ultimoNoGuia;
+        } catch (Exception e) {
+            throw new BadRequestException("Error al obtener último número de guía");
+        }
+    }
+
+    
     // --- MÉTODO DE VALIDACIÓN (MODIFICADO) ---
     
     /**

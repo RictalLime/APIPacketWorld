@@ -206,41 +206,54 @@ public class EnvioImp {
     
     // DENTRO de dominio.EnvioImp.java
 
-// ... (después de obtenerEnviosConductor)
+    // ... (después de obtenerEnviosConductor)
 
-// ------------------------------------
-// ACTUALIZAR ÚNICAMENTE EL ESTADO
-// ------------------------------------
-public static Mensaje actualizarEstadoEnvio(Envio envio) {
-    Mensaje mensaje = new Mensaje();
-    SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+    // ------------------------------------
+    // ACTUALIZAR ÚNICAMENTE EL ESTADO
+    // ------------------------------------
+    public static Mensaje actualizarEstadoEnvio(Envio envio) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
 
-    if (conexionBD != null) {
-        try {
-            // Llama al mapper simple: "envio.actualizarEstado"
-            int resultado = conexionBD.update("envio.actualizarEstado", envio); 
-            conexionBD.commit();
+        if (conexionBD != null) {
+            try {
+                // Llama al mapper simple: "envio.actualizarEstado"
+                int resultado = conexionBD.update("envio.actualizarEstado", envio); 
+                conexionBD.commit();
 
-            if (resultado > 0) {
-                mensaje.setError(false);
-                mensaje.setMensaje("Estado de Envío actualizado correctamente");
-            } else {
+                if (resultado > 0) {
+                    mensaje.setError(false);
+                    mensaje.setMensaje("Estado de Envío actualizado correctamente");
+                } else {
+                    mensaje.setError(true);
+                    mensaje.setMensaje("No se pudo actualizar el estado (ID de envío no encontrado)");
+                }
+            } catch (Exception e) {
+                conexionBD.rollback(); // Es vital hacer rollback en caso de error
                 mensaje.setError(true);
-                mensaje.setMensaje("No se pudo actualizar el estado (ID de envío no encontrado)");
+                mensaje.setMensaje("Error al actualizar estado: " + e.getMessage());
+            } finally {
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
-        } catch (Exception e) {
-            conexionBD.rollback(); // Es vital hacer rollback en caso de error
+        } else {
             mensaje.setError(true);
-            mensaje.setMensaje("Error al actualizar estado: " + e.getMessage());
-        } finally {
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
-    } else {
-        mensaje.setError(true);
-        mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
+        return mensaje;
     }
-    return mensaje;
-}
+    
+    public static String obtenerUltimoNoGuia() {
+        String ultimoNoGuia = null;
+        SqlSession conn = MyBatisUtil.obtenerConexion();
+        try {
+            ultimoNoGuia = conn.selectOne("envio.obtenerUltimoNoGuia");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            conn.close();
+        }
+        return ultimoNoGuia;
+    }
 }
