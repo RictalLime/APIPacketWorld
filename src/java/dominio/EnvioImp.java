@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import pojo.Envio;
 import pojo.EstadoDeEnvio;
 import dto.Mensaje;
+import pojo.Paquete;
+import ws.CalculadoraCostoWS;
 
 
 public class EnvioImp {
@@ -255,5 +257,31 @@ public class EnvioImp {
             conn.close();
         }
         return ultimoNoGuia;
+    }
+    
+    public static Mensaje recalcularCostoEnvio(int idEnvio) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conn = MyBatisUtil.obtenerConexion();
+        try {
+            Envio envio = conn.selectOne("envio.getEnvioPorId", idEnvio);
+            List<Paquete> paquetes = conn.selectList("paquete.getPaquetesPorEnvio", idEnvio);
+
+            float costo = CalculadoraCostoWS.calcular(envio.getOrigenCodigoPostal(),
+                                                      envio.getDestinoCodigoPostal(),
+                                                      paquetes.size());
+
+            envio.setCostoDeEnvio(costo);
+            conn.update("envio.actualizarCosto", envio);
+            conn.commit();
+
+            mensaje.setError(false);
+            mensaje.setMensaje("Costo recalculado: " + costo);
+        } catch (Exception e) {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error al recalcular costo: " + e.getMessage());
+        } finally {
+            conn.close();
+        }
+        return mensaje;
     }
 }

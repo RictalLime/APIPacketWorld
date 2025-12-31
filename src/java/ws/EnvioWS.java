@@ -131,7 +131,6 @@ public class EnvioWS {
         try {
             String ultimoNoGuia = EnvioImp.obtenerUltimoNoGuia();
             if (ultimoNoGuia == null) {
-                // Si no hay registros, devolvemos GUI000 para que el cliente empiece en GUI001
                 ultimoNoGuia = "GUI000";
             }
             return ultimoNoGuia;
@@ -139,7 +138,16 @@ public class EnvioWS {
             throw new BadRequestException("Error al obtener último número de guía");
         }
     }
-
+    
+    @Path("recalcular-costo/{idEnvio}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje recalcularCosto(@PathParam("idEnvio") int idEnvio) {
+        if (idEnvio <= 0) {
+            throw new BadRequestException("El idEnvio debe ser mayor que 0.");
+        }
+        return EnvioImp.recalcularCostoEnvio(idEnvio);
+    }
     
     // --- MÉTODO DE VALIDACIÓN (MODIFICADO) ---
     
