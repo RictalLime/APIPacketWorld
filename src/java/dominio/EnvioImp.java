@@ -7,235 +7,281 @@ import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Envio;
 import pojo.EstadoDeEnvio;
-import pojo.HistorialDeEnvio;
-import pojo.Paquete;
 import dto.Mensaje;
+import pojo.Paquete;
+import ws.CalculadoraCostoWS;
+
 
 public class EnvioImp {
     
     // ------------------------------------
-    // 1. RASTREO WEB (Con Historial y Paquetes)
+    // OBTENER TODOS LOS ENVÍOS
     // ------------------------------------
-    public static List<Envio> getObtenerEnviosPorNoGuia(String noGuia) {
-        List<Envio> envios = new ArrayList<>();
-        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+    public static List<Envio> obtenerEnvios() {
+        List<Envio> listaEnvios = new ArrayList<>();
+        SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
 
         if (conexionBD != null) {
             try {
-                // 1. Obtener Datos Generales del Envío (La cabecera)
-                envios = conexionBD.selectList("mybatis.mapper.EnvioMapper.getObtenerEnviosPorNoGuia", noGuia);
-                
-                // Si encontramos el envío, llenamos sus detalles
-                if (envios != null && !envios.isEmpty()) {
-                    Envio envioEncontrado = envios.get(0);
-                    
-                    // --- INYECCIÓN DE DATOS ANIDADOS ---
-                    try {
-                        // 2. Obtener y setear PAQUETES usando el ID del envío
-                        List<Paquete> listaPaquetes = PaqueteImp.obtenerPaquetesPorEnvio(envioEncontrado.getIdEnvio());
-                        envioEncontrado.setPaquetes(listaPaquetes);
-                        
-                        // 3. Obtener y setear HISTORIAL usando el No. de Guía
-                        List<HistorialDeEnvio> listaHistorial = HistorialDeEnvioImp.obtenerHistorial(envioEncontrado.getNoGuia());
-                        envioEncontrado.setHistorial(listaHistorial);
-                        
-                    } catch (Exception ex) {
-                        System.err.println("Error al cargar detalles anidados (paquetes/historial): " + ex.getMessage());
-                    }
-                }
-                
+                // Consulta actualizada en el XML para usar JOINs
+                listaEnvios = conexionBD.selectList("envio.getObtenerEnvios");
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("Error al recuperar los envíos: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
+        } else {
+            System.err.println(Constantes.MSJ_ERROR_BD);
         }
-        return envios;
+
+        return listaEnvios;
     }
 
     // ------------------------------------
-    // 2. MÉTODOS CRUD (Necesarios para EnvioWS)
+    // OBTENER ENVÍOS POR NÚMERO DE GUÍA
     // ------------------------------------
+    public static List<Envio> obtenerEnviosPorNoGuia(String noGuia) {
+        List<Envio> listaEnvios = null;
+        SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
 
-    public static Mensaje registrar(Envio envio) {
-        Mensaje msj = new Mensaje();
-        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         if (conexionBD != null) {
             try {
-                // 1. Registrar el Envío
-                int filasAfectadas = conexionBD.insert("mybatis.mapper.EnvioMapper.registrar", envio);
-                
-                if (filasAfectadas > 0) {
-                    // 2. CAMBIO IMPORTANTE: Registrar automáticamente el primer historial
-                    // Se asume que el envío llega con un idEstadoDeEnvio inicial (ej. Pendiente)
-                    HistorialDeEnvio historialInicial = new HistorialDeEnvio();
-                    historialInicial.setNoGuia(envio.getNoGuia());
-                    historialInicial.setIdEstadoDeEnvio(envio.getIdEstadoDeEnvio());
-                    historialInicial.setIdColaborador(envio.getIdColaborador());
-                    historialInicial.setMotivo("Registro inicial del envío en sistema");
-                    
-                    // Insertamos el historial dentro de la misma transacción
-                    conexionBD.insert("mybatis.mapper.HistorialDeEnvioMapper.registrarCambioEstatus", historialInicial);
-                    
-                    conexionBD.commit();
-                    msj.setError(false);
-                    msj.setMensaje("Envío registrado con éxito. Guía: " + envio.getNoGuia());
+                listaEnvios = conexionBD.selectList("envio.getObtenerEnviosPorNoGuia", noGuia);
+            } catch (Exception e) {
+                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+            } finally {
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
+            }
+        }
+        return listaEnvios;
+    }
+
+    // ------------------------------------
+    // REGISTRAR ENVÍO (INSERTAR)
+    // ------------------------------------
+    public static Mensaje registrarEnvio(Envio envio) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                // La sentencia INSERT en el XML fue modificada para usar ID de ciudad
+                int resultado = conexionBD.insert("envio.registrar", envio);
+                conexionBD.commit();
+
+                if (resultado > 0) {
+                    mensaje.setError(false);
+                    mensaje.setMensaje("Envío registrado correctamente");
                 } else {
-                    conexionBD.rollback();
-                    msj.setError(true);
-                    msj.setMensaje("No se pudo registrar el envío.");
+                    mensaje.setError(true);
+                    mensaje.setMensaje("No se pudo registrar el envío");
                 }
             } catch (Exception e) {
-                if(conexionBD != null) conexionBD.rollback();
-                msj.setError(true);
-                msj.setMensaje("Error al registrar: " + e.getMessage());
+                mensaje.setError(true);
+                mensaje.setMensaje("Error al registrar envío: " + e.getMessage());
             } finally {
-                conexionBD.close();
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         } else {
-            msj.setError(true);
-            msj.setMensaje(Constantes.MSJ_ERROR_BD);
+            mensaje.setError(true);
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
-        return msj;
+
+        return mensaje;
     }
 
-    public static Mensaje editar(Envio e) {
-        Mensaje m = new Mensaje();
-        SqlSession c = MyBatisUtil.obtenerConexion();
-        if(c != null){
-             try{ 
-                 int r = c.update("mybatis.mapper.EnvioMapper.editar", e);
-                 c.commit();
-                 if (r > 0) {
-                    m.setError(false);
-                    m.setMensaje("Envío actualizado correctamente.");
-                 } else {
-                    m.setError(true);
-                    m.setMensaje("No se pudo actualizar el envío.");
-                 }
-             } catch(Exception ex){ 
-                 m.setError(true); 
-                 m.setMensaje("Error al editar: " + ex.getMessage()); 
-             } finally{ 
-                 c.close(); 
-             }
+    // ------------------------------------
+    // EDITAR ENVÍO
+    // ------------------------------------
+    public static Mensaje editarEnvio(Envio envio) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                // La sentencia UPDATE en el XML fue modificada para usar ID de ciudad
+                int resultado = conexionBD.update("envio.editar", envio);
+                conexionBD.commit();
+
+                if (resultado > 0) {
+                    mensaje.setError(false);
+                    mensaje.setMensaje("Envío editado correctamente");
+                } else {
+                    mensaje.setError(true);
+                    mensaje.setMensaje("No se pudo editar el envío");
+                }
+            } catch (Exception e) {
+                mensaje.setError(true);
+                mensaje.setMensaje("Error al editar envío: " + e.getMessage());
+            } finally {
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
+            }
         } else {
-            m.setError(true);
-            m.setMensaje(Constantes.MSJ_ERROR_BD);
+            mensaje.setError(true);
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
-        return m;
+
+        return mensaje;
     }
-    
-    public static Mensaje eliminarEnvio(int id) { 
-        Mensaje m = new Mensaje();
-        SqlSession c = MyBatisUtil.obtenerConexion();
-        if(c != null){
-             try{ 
-                 int r = c.delete("mybatis.mapper.EnvioMapper.eliminar", id);
-                 c.commit();
-                 if (r > 0) {
-                    m.setError(false);
-                    m.setMensaje("Envío eliminado correctamente.");
-                 } else {
-                    m.setError(true);
-                    m.setMensaje("No se pudo eliminar el envío.");
-                 }
-             } catch(Exception ex){ 
-                 m.setError(true); 
-                 m.setMensaje("Error al eliminar: " + ex.getMessage()); 
-             } finally{ 
-                 c.close(); 
-             }
-        } else {
-            m.setError(true);
-            m.setMensaje(Constantes.MSJ_ERROR_BD);
-        }
-        return m;
-    }
-    
-    public static Mensaje actualizarEstadoEnvio(Envio e) { 
-        Mensaje m = new Mensaje();
-        SqlSession c = MyBatisUtil.obtenerConexion();
-        if(c != null){
-             try{ 
-                 // 1. Actualizar el estatus en la tabla envio
-                 int r = c.update("mybatis.mapper.EnvioMapper.actualizarEstado", e);
-                 
-                 if (r > 0) {
-                    // 2. Registrar en el historial el cambio
-                    // Nota: 'e' debería traer el motivo si viene del cliente, si no, ponemos uno genérico
-                    HistorialDeEnvio historial = new HistorialDeEnvio();
-                    historial.setNoGuia(e.getNoGuia());
-                    historial.setIdEstadoDeEnvio(e.getIdEstadoDeEnvio());
-                    historial.setIdColaborador(e.getIdColaborador()); // Importante: Quién hizo el cambio
-                    historial.setMotivo("Actualización de estatus"); 
-                    
-                    c.insert("mybatis.mapper.HistorialDeEnvioMapper.registrarCambioEstatus", historial);
-                     
-                    c.commit();
-                    m.setError(false);
-                    m.setMensaje("Estatus actualizado correctamente.");
-                 } else {
-                    c.rollback();
-                    m.setError(true);
-                    m.setMensaje("No se pudo actualizar el estatus.");
-                 }
-             } catch(Exception ex){ 
-                 if(c != null) c.rollback();
-                 m.setError(true); 
-                 m.setMensaje("Error al actualizar estatus: " + ex.getMessage()); 
-             } finally{ 
-                 c.close(); 
-             }
-        } else {
-            m.setError(true);
-            m.setMensaje(Constantes.MSJ_ERROR_BD);
-        }
-        return m;
-    }
-    
-    public static List<Envio> obtenerTodos() {
-        List<Envio> list = new ArrayList<>();
-        SqlSession c = MyBatisUtil.obtenerConexion();
-        if(c != null){
-            try{
-                list = c.selectList("mybatis.mapper.EnvioMapper.obtenerTodos");
-            }catch(Exception e){ 
-                e.printStackTrace(); 
-            } finally{ 
-                c.close(); 
+
+    // ------------------------------------
+    // ELIMINAR ENVÍO
+    // ------------------------------------
+    public static Mensaje eliminarEnvio(int idEnvio) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                int resultado = conexionBD.delete("envio.eliminar", idEnvio);
+                conexionBD.commit();
+
+                if (resultado > 0) {
+                    mensaje.setError(false);
+                    mensaje.setMensaje("Envío eliminado correctamente");
+                } else {
+                    mensaje.setError(true);
+                    mensaje.setMensaje("No se pudo eliminar el envío");
+                }
+            } catch (Exception e) {
+                mensaje.setError(true);
+                mensaje.setMensaje("Error al eliminar envío: " + e.getMessage());
+            } finally {
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         }
-        return list;
+        return mensaje;
     }
 
+    // ------------------------------------
+    // OBTENER ESTADOS DE ENVÍOS
+    // ------------------------------------
     public static List<EstadoDeEnvio> obtenerEstadosDeEnvios() {
-        List<EstadoDeEnvio> list = new ArrayList<>();
-        SqlSession c = MyBatisUtil.obtenerConexion();
-        if(c != null){
-            try{
-                list = c.selectList("mybatis.mapper.EnvioMapper.obtenerEstadosDeEnvios");
-            }catch(Exception e){ 
-                e.printStackTrace(); 
-            } finally{ 
-                c.close(); 
+        List<EstadoDeEnvio> listaEstados = null;
+        SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                listaEstados = conexionBD.selectList("envio.getObtenerEstadosDeEnvio");
+            } catch (Exception e) {
+                System.err.println("Error al recuperar los estados de envíos: " + e.getMessage());
+            } finally {
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
         }
-        return list;
+        return listaEstados;
     }
 
+    // ------------------------------------
+    // OBTENER ENVÍOS POR CONDUCTOR
+    // ------------------------------------
     public static List<Envio> obtenerEnviosConductor(int idColaborador) {
-        List<Envio> list = new ArrayList<>();
-        SqlSession c = MyBatisUtil.obtenerConexion();
-        if(c != null){
-            try{
-                list = c.selectList("mybatis.mapper.EnvioMapper.obtenerEnviosConductor", idColaborador);
-            }catch(Exception e){ 
-                e.printStackTrace(); 
-            } finally{ 
-                c.close(); 
+        List<Envio> listaEnvios = new ArrayList<>();
+        SqlSession conexionDB = mybatis.MyBatisUtil.obtenerConexion();
+
+        if (conexionDB != null) {
+            try {
+                listaEnvios = conexionDB.selectList("envio.getObtenerEnviosConductor", idColaborador);
+            } catch (Exception e) {
+                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+
+            } finally {
+                if (conexionDB != null) {
+                    conexionDB.close();
+                }
             }
         }
-        return list;
+        return listaEnvios;
+    }
+    
+    // DENTRO de dominio.EnvioImp.java
+
+    // ... (después de obtenerEnviosConductor)
+
+    // ------------------------------------
+    // ACTUALIZAR ÚNICAMENTE EL ESTADO
+    // ------------------------------------
+    public static Mensaje actualizarEstadoEnvio(Envio envio) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                // Llama al mapper simple: "envio.actualizarEstado"
+                int resultado = conexionBD.update("envio.actualizarEstado", envio); 
+                conexionBD.commit();
+
+                if (resultado > 0) {
+                    mensaje.setError(false);
+                    mensaje.setMensaje("Estado de Envío actualizado correctamente");
+                } else {
+                    mensaje.setError(true);
+                    mensaje.setMensaje("No se pudo actualizar el estado (ID de envío no encontrado)");
+                }
+            } catch (Exception e) {
+                conexionBD.rollback(); // Es vital hacer rollback en caso de error
+                mensaje.setError(true);
+                mensaje.setMensaje("Error al actualizar estado: " + e.getMessage());
+            } finally {
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
+            }
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
+        }
+        return mensaje;
+    }
+    
+    public static String obtenerUltimoNoGuia() {
+        String ultimoNoGuia = null;
+        SqlSession conn = MyBatisUtil.obtenerConexion();
+        try {
+            ultimoNoGuia = conn.selectOne("envio.obtenerUltimoNoGuia");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            conn.close();
+        }
+        return ultimoNoGuia;
+    }
+    
+    public static Mensaje recalcularCostoEnvio(int idEnvio) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conn = MyBatisUtil.obtenerConexion();
+        try {
+            Envio envio = conn.selectOne("envio.getEnvioPorId", idEnvio);
+            List<Paquete> paquetes = conn.selectList("paquete.getPaquetesPorEnvio", idEnvio);
+
+            float costo = CalculadoraCostoWS.calcular(envio.getOrigenCodigoPostal(),
+                                                      envio.getDestinoCodigoPostal(),
+                                                      paquetes.size());
+
+            envio.setCostoDeEnvio(costo);
+            conn.update("envio.actualizarCosto", envio);
+            conn.commit();
+
+            mensaje.setError(false);
+            mensaje.setMensaje("Costo recalculado: " + costo);
+        } catch (Exception e) {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error al recalcular costo: " + e.getMessage());
+        } finally {
+            conn.close();
+        }
+        return mensaje;
     }
 }

@@ -16,7 +16,6 @@
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/EstadoUnidadImp.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/HistorialDeBajaImp.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/HistorialDeEnvioImp.java</file>
-            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/dominio/HistorialEnvioImp.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/CiudadMapper.xml</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/ClienteMapper.xml</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/ColaboradorMapper.xml</file>
@@ -29,6 +28,12 @@
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/Paquete.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/Envio.java</file>
             <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/pojo/HistorialDeEnvio.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/EnvioMapper.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/EstadoWS.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/HistorialDeEnvioWS.java</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/HistorialDeEnvioMapper.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/mybatis/mapper/LoginMapper.xml</file>
+            <file>file:/C:/Users/Angel2/Desktop/APIPW/APIPacketWorld/src/java/ws/LoginWS.java</file>
         </group>
     </open-files>
 </project-private>

@@ -48,16 +48,16 @@ public class EnvioWS {
     @Path("obtener-envios")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Envio> obtenerEnvios() {
-        return EnvioImp.obtenerTodos();
+    public static List<Envio> obtenerEnvios() {
+        return EnvioImp.obtenerEnvios();
     }
     
-    @Path("rastreo/{noGuia}")
+    @Path("obtener-envios-por-noguia/{noGuia}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Envio> ObtenerEnviosPorNoGuia(@PathParam("noGuia") String noGuia) {
+    public static List<Envio> obtenerEnviosPorNoGuia(@PathParam("noGuia") String noGuia) {
         if(noGuia!=null && !noGuia.isEmpty()){
-            return EnvioImp.getObtenerEnviosPorNoGuia(noGuia);
+            return EnvioImp.obtenerEnviosPorNoGuia(noGuia);
         }
         throw new BadRequestException("El número de guía es inválido.");
     }
@@ -65,14 +65,14 @@ public class EnvioWS {
     @Path("obtener-estados-envios")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<EstadoDeEnvio> obtenerEstadosEnvios() {
+    public static List<EstadoDeEnvio> obtenerEstadosEnvios() {
         return EnvioImp.obtenerEstadosDeEnvios();
     }
     
     @Path("obtener-envios-conductor/{idColaborador}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Envio> obtenerEnvioConductor(@PathParam("idColaborador") int idColaborador){
+    public static List<Envio> obtenerEnvioConductor(@PathParam("idColaborador") int idColaborador){
         return EnvioImp.obtenerEnviosConductor(idColaborador);
     }
 
@@ -92,7 +92,7 @@ public class EnvioWS {
             throw new BadRequestException("Datos del envío inválidos. Verifique IDs de Cliente, Colaborador, Estado, Ciudades y Estados de Origen/Destino.");
         }
         
-        return EnvioImp.registrar(envio);
+        return EnvioImp.registrarEnvio(envio);
     }
 
     @Path("editar-envio")
@@ -109,7 +109,7 @@ public class EnvioWS {
             throw new BadRequestException("Datos del envío inválidos. Verifique IDs de Cliente, Colaborador, Estado, Ciudades y Estados de Origen/Destino.");
         }
         
-        return EnvioImp.editar(envio);
+        return EnvioImp.editarEnvio(envio);
     }
 
     // --- Servicio de ELIMINAR (DELETE) ---
@@ -122,6 +122,31 @@ public class EnvioWS {
             throw new BadRequestException("El idEnvio debe ser mayor que 0.");
         }
         return EnvioImp.eliminarEnvio(idEnvio);
+    }
+    
+    @Path("ultimo-no-guia")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtenerUltimoNoGuia() {
+        try {
+            String ultimoNoGuia = EnvioImp.obtenerUltimoNoGuia();
+            if (ultimoNoGuia == null) {
+                ultimoNoGuia = "GUI000";
+            }
+            return ultimoNoGuia;
+        } catch (Exception e) {
+            throw new BadRequestException("Error al obtener último número de guía");
+        }
+    }
+    
+    @Path("recalcular-costo/{idEnvio}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje recalcularCosto(@PathParam("idEnvio") int idEnvio) {
+        if (idEnvio <= 0) {
+            throw new BadRequestException("El idEnvio debe ser mayor que 0.");
+        }
+        return EnvioImp.recalcularCostoEnvio(idEnvio);
     }
     
     // --- MÉTODO DE VALIDACIÓN (MODIFICADO) ---

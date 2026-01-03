@@ -1,126 +1,203 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mybatis.mapper.EnvioMapper">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-    <!-- ResultMap Completo con Normalización -->
-    <resultMap id="mapaEnvio" type="pojo.Envio">
-        <id property="idEnvio" column="idEnvio" />
-        <result property="noGuia" column="noGuia" />
-        <result property="idCliente" column="idCliente" />
-        <result property="cliente" column="cliente" />
-        <result property="idColaborador" column="idColaborador" />
-        <result property="colaborador" column="colaborador" />
-        <result property="idSucursal" column="idSucursal" />
-        <result property="costoDeEnvio" column="costoDeEnvio" />
-        <result property="idEstadoDeEnvio" column="idEstadoDeEnvio" />
-        <result property="estadoDeEnvio" column="nombreEstado" /> 
+<mapper namespace="envio">
 
-        <!-- ORIGEN -->
-        <result property="origenCalle" column="origenCalle" />
-        <result property="origenNumero" column="origenNumero" />
-        <result property="origenColonia" column="origenColonia" />
-        <result property="origenCodigoPostal" column="origenCodigoPostal" />
-        <result property="idOrigenCiudad" column="idOrigenCiudad" />
-        <result property="nombreCiudadOrigen" column="nombreCiudadOrigen" />
-        <result property="idOrigenEstado" column="idOrigenEstado" />
-        <result property="nombreEstadoOrigen" column="nombreEstadoOrigen" />
-        
-        <!-- DESTINO -->
-        <result property="destinoCalle" column="destinoCalle" />
-        <result property="destinoNumero" column="destinoNumero" />
-        <result property="destinoColonia" column="destinoColonia" />
-        <result property="destinoCodigoPostal" column="destinoCodigoPostal" />
-        <result property="idDestinoCiudad" column="idDestinoCiudad" />
-        <result property="nombreCiudadDestino" column="nombreCiudadDestino" />
-        <result property="idDestinoEstado" column="idDestinoEstado" />
-        <result property="nombreEstadoDestino" column="nombreEstadoDestino" />
-    </resultMap>
-
-    <!-- CONSULTA 1: RASTREO (Por Guía) -->
-    <select id="getObtenerEnviosPorNoGuia" resultMap="mapaEnvio" parameterType="String">
+    <sql id="selectEnvioFields">
         SELECT 
-            e.idEnvio, e.noGuia, e.costoDeEnvio,
-            e.idEstadoDeEnvio, est.nombre AS nombreEstado,
-            e.idCliente, 'Cliente Generico' as cliente, 
-            e.idColaborador, 'Colaborador Generico' as colaborador,
+            e.idEnvio,
+            e.idCliente,
             e.idSucursal,
-            -- Origen
-            e.origenCalle, e.origenNumero, e.origenColonia, e.origenCodigoPostal,
-            e.idOrigenCiudad, co.nombre AS nombreCiudadOrigen,
-            e.idOrigenEstado, eo.nombre AS nombreEstadoOrigen,
-            -- Destino
-            e.destinoCalle, e.destinoNumero, e.destinoColonia, e.destinoCodigoPostal,
-            e.idDestinoCiudad, cd.nombre AS nombreCiudadDestino,
-            e.idDestinoEstado, ed.nombre AS nombreEstadoDestino
+
+            IFNULL(CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno), 'Cliente Desconocido') AS cliente,
+
+            -- IDs de ubicación
+            e.idOrigenCiudad,
+            e.idDestinoCiudad,
+            e.idOrigenEstado,
+            e.idDestinoEstado,
+
+            -- Dirección física
+            e.origenCalle,
+            e.origenNumero,
+            e.origenColonia,
+            e.origenCodigoPostal,
+            e.destinoCalle,
+            e.destinoNumero,
+            e.destinoColonia,
+            e.destinoCodigoPostal,
+
+            -- Nombres obtenidos por JOIN
+            cio.nombre AS nombreCiudadOrigen,
+            eso.nombre AS nombreEstadoOrigen,
+            cid.nombre AS nombreCiudadDestino,
+            esd.nombre AS nombreEstadoDestino,
+
+            -- Campos concatenados
+            CONCAT(
+                e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia,
+                ', CP: ', e.origenCodigoPostal,
+                IFNULL(CONCAT(', ', cio.nombre, ', ', eso.nombre), '')
+            ) AS origen,
+
+            CONCAT(
+                e.destinoCalle, ', ', e.destinoNumero, ', ', e.destinoColonia,
+                ', CP: ', e.destinoCodigoPostal,
+                IFNULL(CONCAT(', ', cid.nombre, ', ', esd.nombre), '')
+            ) AS destino,
+
+            e.noGuia,
+            e.costoDeEnvio,
+            e.idEstadoDeEnvio,
+            IFNULL(est.nombre, 'Estado Desconocido') AS estadoDeEnvio,
+
+            e.idColaborador,
+            IFNULL(CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno), 'Conductor Desconocido') AS colaborador
+
         FROM envio e
-        INNER JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
-        INNER JOIN ciudad co ON e.idOrigenCiudad = co.idCiudad
-        INNER JOIN estado eo ON e.idOrigenEstado = eo.idEstado
-        INNER JOIN ciudad cd ON e.idDestinoCiudad = cd.idCiudad
-        INNER JOIN estado ed ON e.idDestinoEstado = ed.idEstado
-        WHERE e.noGuia = #{noGuia}
+        LEFT JOIN cliente c ON e.idCliente = c.idCliente
+        LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
+        LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador
+
+        LEFT JOIN ciudad cio ON e.idOrigenCiudad = cio.idCiudad
+        LEFT JOIN estado eso ON e.idOrigenEstado = eso.idEstado
+
+        LEFT JOIN ciudad cid ON e.idDestinoCiudad = cid.idCiudad
+        LEFT JOIN estado esd ON e.idDestinoEstado = esd.idEstado
+    </sql>
+
+    <select id="getObtenerEnvios" resultType="pojo.Envio">
+        <include refid="selectEnvioFields"/>
     </select>
 
-    <!-- CONSULTA 2: OBTENER TODOS (Corregida para evitar lista vacía) -->
-    <select id="obtenerTodos" resultMap="mapaEnvio">
-        SELECT 
-            e.idEnvio, e.noGuia, e.costoDeEnvio,
-            e.idEstadoDeEnvio, est.nombre AS nombreEstado,
-            e.idCliente, 'Cliente' as cliente,
-            e.idColaborador, 'Colaborador' as colaborador,
-            e.idSucursal,
-            e.origenCalle, e.origenNumero, e.origenColonia, e.origenCodigoPostal,
-            e.idOrigenCiudad, co.nombre AS nombreCiudadOrigen,
-            e.idOrigenEstado, eo.nombre AS nombreEstadoOrigen,
-            e.destinoCalle, e.destinoNumero, e.destinoColonia, e.destinoCodigoPostal,
-            e.idDestinoCiudad, cd.nombre AS nombreCiudadDestino,
-            e.idDestinoEstado, ed.nombre AS nombreEstadoDestino
-        FROM envio e
-        INNER JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
-        LEFT JOIN ciudad co ON e.idOrigenCiudad = co.idCiudad
-        LEFT JOIN estado eo ON e.idOrigenEstado = eo.idEstado
-        LEFT JOIN ciudad cd ON e.idDestinoCiudad = cd.idCiudad
-        LEFT JOIN estado ed ON e.idDestinoEstado = ed.idEstado
+    <select id="getObtenerEnviosConductor" resultType="pojo.Envio" parameterType="int">
+        <include refid="selectEnvioFields"/>
+        WHERE e.idColaborador = #{idColaborador};
     </select>
 
-    <!-- CONSULTA 3: OBTENER ESTADOS DE ENVÍO -->
-    <select id="obtenerEstadosDeEnvios" resultType="pojo.EstadoDeEnvio">
-        SELECT idEstadoDeEnvio, nombre FROM estadoDeEnvio
+    <select id="getObtenerEnviosPorNoGuia" resultType="pojo.Envio" parameterType="String">
+        <include refid="selectEnvioFields"/>
+        WHERE e.noGuia = #{noGuia};
     </select>
 
-    <!-- MÉTODOS DE ESCRITURA -->
-    <insert id="registrar" parameterType="pojo.Envio" useGeneratedKeys="true" keyProperty="idEnvio">
+    <select id="getObtenerEstadosDeEnvio" resultType="pojo.EstadoDeEnvio">
+        SELECT idEstadoDeEnvio, nombre
+        FROM estadoDeEnvio;
+    </select>
+
+    <insert id="registrar" parameterType="pojo.Envio">
         INSERT INTO envio (
-            noGuia, idCliente, idSucursal, idColaborador, costoDeEnvio, idEstadoDeEnvio,
-            origenCalle, origenNumero, origenColonia, origenCodigoPostal, idOrigenCiudad, idOrigenEstado,
-            destinoCalle, destinoNumero, destinoColonia, destinoCodigoPostal, idDestinoCiudad, idDestinoEstado
+            idCliente,
+            idSucursal,
+            origenCalle,
+            origenNumero,
+            origenColonia,
+            origenCodigoPostal,
+            idOrigenCiudad,
+            idOrigenEstado,
+            destinoCalle,
+            destinoNumero,
+            destinoColonia,
+            destinoCodigoPostal,
+            idDestinoCiudad,
+            idDestinoEstado,
+            noGuia,
+            costoDeEnvio,
+            idEstadoDeEnvio,
+            idColaborador
         ) VALUES (
-            #{noGuia}, #{idCliente}, #{idSucursal}, #{idColaborador}, #{costoDeEnvio}, #{idEstadoDeEnvio},
-            #{origenCalle}, #{origenNumero}, #{origenColonia}, #{origenCodigoPostal}, #{idOrigenCiudad}, #{idOrigenEstado},
-            #{destinoCalle}, #{destinoNumero}, #{destinoColonia}, #{destinoCodigoPostal}, #{idDestinoCiudad}, #{idDestinoEstado}
-        )
+            #{idCliente},
+            #{idSucursal},
+            #{origenCalle},
+            #{origenNumero},
+            #{origenColonia},
+            #{origenCodigoPostal},
+            #{idOrigenCiudad},
+            #{idOrigenEstado},
+            #{destinoCalle},
+            #{destinoNumero},
+            #{destinoColonia},
+            #{destinoCodigoPostal},
+            #{idDestinoCiudad},
+            #{idDestinoEstado},
+            #{noGuia},
+            #{costoDeEnvio},
+            #{idEstadoDeEnvio},
+            #{idColaborador}
+        );
     </insert>
 
     <update id="editar" parameterType="pojo.Envio">
-        UPDATE envio SET
+        UPDATE envio
+        SET
             idCliente = #{idCliente},
             idSucursal = #{idSucursal},
-            idColaborador = #{idColaborador},
+            origenCalle = #{origenCalle},
+            origenNumero = #{origenNumero},
+            origenColonia = #{origenColonia},
+            origenCodigoPostal = #{origenCodigoPostal},
+            idOrigenCiudad = #{idOrigenCiudad},
+            idOrigenEstado = #{idOrigenEstado},
+            destinoCalle = #{destinoCalle},
+            destinoNumero = #{destinoNumero},
+            destinoColonia = #{destinoColonia},
+            destinoCodigoPostal = #{destinoCodigoPostal},
+            idDestinoCiudad = #{idDestinoCiudad},
+            idDestinoEstado = #{idDestinoEstado},
             costoDeEnvio = #{costoDeEnvio},
             idEstadoDeEnvio = #{idEstadoDeEnvio},
-            origenCalle = #{origenCalle}, origenNumero = #{origenNumero}, origenColonia = #{origenColonia},
-            origenCodigoPostal = #{origenCodigoPostal}, idOrigenCiudad = #{idOrigenCiudad}, idOrigenEstado = #{idOrigenEstado},
-            destinoCalle = #{destinoCalle}, destinoNumero = #{destinoNumero}, destinoColonia = #{destinoColonia},
-            destinoCodigoPostal = #{destinoCodigoPostal}, idDestinoCiudad = #{idDestinoCiudad}, idDestinoEstado = #{idDestinoEstado}
-        WHERE idEnvio = #{idEnvio}
+            idColaborador = #{idColaborador}
+        WHERE idEnvio = #{idEnvio};
     </update>
 
     <update id="actualizarEstado" parameterType="pojo.Envio">
-        UPDATE envio SET idEstadoDeEnvio = #{idEstadoDeEnvio} WHERE idEnvio = #{idEnvio}
+        UPDATE envio
+        SET idEstadoDeEnvio = #{idEstadoDeEnvio}
+        WHERE idEnvio = #{idEnvio};
     </update>
-    
+
     <delete id="eliminar" parameterType="int">
-        DELETE FROM envio WHERE idEnvio = #{idEnvio}
+        DELETE FROM envio
+        WHERE idEnvio = #{idEnvio};
     </delete>
+    
+    <select id="obtenerUltimoNoGuia" resultType="string">
+        SELECT noGuia
+        FROM envio
+        ORDER BY idEnvio DESC
+        LIMIT 1
+    </select>
+    
+    <select id="getEnvioPorId" parameterType="int" resultType="pojo.Envio">
+        SELECT 
+            idEnvio,
+            idCliente,
+            idSucursal,
+            origenCalle,
+            origenNumero,
+            origenColonia,
+            origenCodigoPostal,
+            idOrigenCiudad,
+            idOrigenEstado,
+            destinoCalle,
+            destinoNumero,
+            destinoColonia,
+            destinoCodigoPostal,
+            idDestinoCiudad,
+            idDestinoEstado,
+            noGuia,
+            costoDeEnvio,
+            idEstadoDeEnvio,
+            idColaborador
+        FROM envio
+        WHERE idEnvio = #{idEnvio};
+    </select>
+    
+    <update id="actualizarCosto" parameterType="pojo.Envio">
+        UPDATE envio
+        SET costoDeEnvio = #{costoDeEnvio}
+        WHERE idEnvio = #{idEnvio};
+    </update>
 
 </mapper>
