@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
         resources.add(ws.CiudadWS.class);
         resources.add(ws.ClienteWS.class);
         resources.add(ws.ColaboradorWS.class);
+        //resources.add(ws.ConductorAsignadoWS.class);
         resources.add(ws.ConductorAsignadoWS.class);
         resources.add(ws.Cors.class);
         resources.add(ws.EnvioWS.class);

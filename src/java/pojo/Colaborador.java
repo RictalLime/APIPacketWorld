@@ -24,13 +24,15 @@ public class Colaborador {
     private String numeroDeLicencia;
     private String fotografia;
     private String contrasena;
+    private Integer idSucursal;
     
     // Constructor por defecto
     public Colaborador() {
     }
     
     // Constructor
-    public Colaborador(Integer idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, String curp, String correo, String noPersonal, Integer idRol, String rol, String numeroDeLicencia, String fotografia, String contrasena) {
+
+    public Colaborador(Integer idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, String curp, String correo, String noPersonal, Integer idRol, String rol, String numeroDeLicencia, String fotografia, String contrasena, Integer idSucursal) {
         this.idColaborador = idColaborador;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -43,6 +45,7 @@ public class Colaborador {
         this.numeroDeLicencia = numeroDeLicencia;
         this.fotografia = fotografia;
         this.contrasena = contrasena;
+        this.idSucursal = idSucursal;
     }
     
     // Metodos get
@@ -93,6 +96,10 @@ public class Colaborador {
     public String getContrasena() {
         return contrasena;
     }
+
+    public Integer getIdSucursal() {
+        return idSucursal;
+    }
     
     //Metodos set
     public void setIdColaborador(Integer idColaborador) {
@@ -141,5 +148,9 @@ public class Colaborador {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public void setIdSucursal(Integer idSucursal) {
+        this.idSucursal = idSucursal;
     }
 }

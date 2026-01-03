@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT 
             s.idSucursal,
             s.codigoSucursal,
-            s.nombre AS nombreSucursal,
+            s.nombre,
             s.estatus,
             s.calle,
             s.numero,
