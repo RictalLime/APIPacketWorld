@@ -58,7 +58,7 @@ public class ConductorAsignadoWS {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje editarConductorAsignado(ConductorAsignado conductor) {
-        if (conductor == null || conductor.getIdConductorAsignado() <= 0) {
+        if (conductor == null || conductor.getIdConductoresAsignados() <= 0) {
             throw new BadRequestException("Los datos del conductor asignado son inválidos o el ID es incorrecto.");
         }
         return ConductorAsignadoImp.editar(conductor);
