@@ -110,19 +110,20 @@
     </insert>
 
     <update id="editar" parameterType="pojo.Colaborador">
-        UPDATE colaborador
-        SET 
-            nombre = #{nombre},
-            apellidoPaterno = #{apellidoPaterno},
-            apellidoMaterno = #{apellidoMaterno},
-            curp = #{curp},
-            correo = #{correo},
-            noPersonal = #{noPersonal},
-            contrasena = #{contrasena},
-            idRol = #{idRol},
-            numeroDeLicencia = #{numeroDeLicencia},
-            idSucursal = #{idSucursal}
-        WHERE idColaborador = #{idColaborador};
+    UPDATE colaborador
+    <set>
+        <if test="nombre != null">nombre = #{nombre},</if>
+        <if test="apellidoPaterno != null">apellidoPaterno = #{apellidoPaterno},</if>
+        <if test="apellidoMaterno != null">apellidoMaterno = #{apellidoMaterno},</if>
+        <if test="curp != null">curp = #{curp},</if>
+        <if test="correo != null">correo = #{correo},</if>
+        <if test="noPersonal != null">noPersonal = #{noPersonal},</if>
+        <if test="contrasena != null">contrasena = #{contrasena},</if>
+        <if test="idRol != null">idRol = #{idRol},</if>
+        <if test="numeroDeLicencia != null">numeroDeLicencia = #{numeroDeLicencia},</if>
+        <if test="idSucursal != null">idSucursal = #{idSucursal}</if>
+    </set>
+    WHERE idColaborador = #{idColaborador}
     </update>
 
     <delete id="eliminar" parameterType="java.lang.Integer">
