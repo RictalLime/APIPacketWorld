@@ -161,6 +161,44 @@
         DELETE FROM envio
         WHERE idEnvio = #{idEnvio};
     </delete>
+    
+    <select id="obtenerUltimoNoGuia" resultType="string">
+        SELECT noGuia
+        FROM envio
+        ORDER BY idEnvio DESC
+        LIMIT 1
+    </select>
+    
+    <select id="getEnvioPorId" parameterType="int" resultType="pojo.Envio">
+        SELECT 
+            idEnvio,
+            idCliente,
+            idSucursal,
+            origenCalle,
+            origenNumero,
+            origenColonia,
+            origenCodigoPostal,
+            idOrigenCiudad,
+            idOrigenEstado,
+            destinoCalle,
+            destinoNumero,
+            destinoColonia,
+            destinoCodigoPostal,
+            idDestinoCiudad,
+            idDestinoEstado,
+            noGuia,
+            costoDeEnvio,
+            idEstadoDeEnvio,
+            idColaborador
+        FROM envio
+        WHERE idEnvio = #{idEnvio};
+    </select>
+    
+    <update id="actualizarCosto" parameterType="pojo.Envio">
+        UPDATE envio
+        SET costoDeEnvio = #{costoDeEnvio}
+        WHERE idEnvio = #{idEnvio};
+    </update>
 
 </mapper>
 

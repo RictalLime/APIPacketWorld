@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import pojo.Envio;
 import pojo.EstadoDeEnvio;
 import dto.Mensaje;
+import pojo.Paquete;
+import ws.CalculadoraCostoWS;
 
 
 public class EnvioImp {
@@ -206,41 +208,80 @@ public class EnvioImp {
     
     // DENTRO de dominio.EnvioImp.java
 
-// ... (después de obtenerEnviosConductor)
+    // ... (después de obtenerEnviosConductor)
 
-// ------------------------------------
-// ACTUALIZAR ÚNICAMENTE EL ESTADO
-// ------------------------------------
-public static Mensaje actualizarEstadoEnvio(Envio envio) {
-    Mensaje mensaje = new Mensaje();
-    SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+    // ------------------------------------
+    // ACTUALIZAR ÚNICAMENTE EL ESTADO
+    // ------------------------------------
+    public static Mensaje actualizarEstadoEnvio(Envio envio) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
 
-    if (conexionBD != null) {
-        try {
-            // Llama al mapper simple: "envio.actualizarEstado"
-            int resultado = conexionBD.update("envio.actualizarEstado", envio); 
-            conexionBD.commit();
+        if (conexionBD != null) {
+            try {
+                // Llama al mapper simple: "envio.actualizarEstado"
+                int resultado = conexionBD.update("envio.actualizarEstado", envio); 
+                conexionBD.commit();
 
-            if (resultado > 0) {
-                mensaje.setError(false);
-                mensaje.setMensaje("Estado de Envío actualizado correctamente");
-            } else {
+                if (resultado > 0) {
+                    mensaje.setError(false);
+                    mensaje.setMensaje("Estado de Envío actualizado correctamente");
+                } else {
+                    mensaje.setError(true);
+                    mensaje.setMensaje("No se pudo actualizar el estado (ID de envío no encontrado)");
+                }
+            } catch (Exception e) {
+                conexionBD.rollback(); // Es vital hacer rollback en caso de error
                 mensaje.setError(true);
-                mensaje.setMensaje("No se pudo actualizar el estado (ID de envío no encontrado)");
+                mensaje.setMensaje("Error al actualizar estado: " + e.getMessage());
+            } finally {
+                if (conexionBD != null) {
+                    conexionBD.close();
+                }
             }
-        } catch (Exception e) {
-            conexionBD.rollback(); // Es vital hacer rollback en caso de error
+        } else {
             mensaje.setError(true);
-            mensaje.setMensaje("Error al actualizar estado: " + e.getMessage());
-        } finally {
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
+            mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
         }
-    } else {
-        mensaje.setError(true);
-        mensaje.setMensaje(Constantes.MSJ_ERROR_BD);
+        return mensaje;
     }
-    return mensaje;
-}
+    
+    public static String obtenerUltimoNoGuia() {
+        String ultimoNoGuia = null;
+        SqlSession conn = MyBatisUtil.obtenerConexion();
+        try {
+            ultimoNoGuia = conn.selectOne("envio.obtenerUltimoNoGuia");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            conn.close();
+        }
+        return ultimoNoGuia;
+    }
+    
+    public static Mensaje recalcularCostoEnvio(int idEnvio) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conn = MyBatisUtil.obtenerConexion();
+        try {
+            Envio envio = conn.selectOne("envio.getEnvioPorId", idEnvio);
+            List<Paquete> paquetes = conn.selectList("paquete.getPaquetesPorEnvio", idEnvio);
+
+            float costo = CalculadoraCostoWS.calcular(envio.getOrigenCodigoPostal(),
+                                                      envio.getDestinoCodigoPostal(),
+                                                      paquetes.size());
+
+            envio.setCostoDeEnvio(costo);
+            conn.update("envio.actualizarCosto", envio);
+            conn.commit();
+
+            mensaje.setError(false);
+            mensaje.setMensaje("Costo recalculado: " + costo);
+        } catch (Exception e) {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error al recalcular costo: " + e.getMessage());
+        } finally {
+            conn.close();
+        }
+        return mensaje;
+    }
 }
