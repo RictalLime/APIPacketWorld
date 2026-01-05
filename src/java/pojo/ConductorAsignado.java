@@ -9,7 +9,7 @@ package pojo;
  * @author Tron7
  */
 public class ConductorAsignado {
-    private Integer idConductorAsignado;
+    private Integer idConductoresAsignados;
     private Integer idColaborador;
     private Integer idUnidad;
     private String conductor;
@@ -19,8 +19,8 @@ public class ConductorAsignado {
     public ConductorAsignado() {
     }
 
-    public ConductorAsignado(Integer idConductorAsignado, Integer idColaborador, Integer idUnidad, String conductor, String unidad, String vin) {
-        this.idConductorAsignado = idConductorAsignado;
+    public ConductorAsignado(Integer idConductoresAsignados, Integer idColaborador, Integer idUnidad, String conductor, String unidad, String vin) {
+        this.idConductoresAsignados = idConductoresAsignados;
         this.idColaborador = idColaborador;
         this.idUnidad = idUnidad;
         this.conductor = conductor;
@@ -28,8 +28,8 @@ public class ConductorAsignado {
         this.vin = vin;
     }
 
-    public Integer getIdConductorAsignado() {
-        return idConductorAsignado;
+    public Integer getIdConductoresAsignados() {
+        return idConductoresAsignados;
     }
 
     public Integer getIdColaborador() {
@@ -52,8 +52,8 @@ public class ConductorAsignado {
         return vin;
     }
 
-    public void setIdConductorAsignado(Integer idConductorAsignado) {
-        this.idConductorAsignado = idConductorAsignado;
+    public void setIdConductoresAsignados(Integer idConductoresAsignados) {
+        this.idConductoresAsignados = idConductoresAsignados;
     }
 
     public void setIdColaborador(Integer idColaborador) {
@@ -75,4 +75,5 @@ public class ConductorAsignado {
     public void setVin(String vin) {
         this.vin = vin;
     }
+    
 }
