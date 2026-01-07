@@ -1,6 +1,5 @@
 package ws;
 
-// IMPORTANTE: Importamos la clase CORRECTA (la que tiene el 'De')
 import dominio.HistorialDeEnvioImp; 
 
 import java.util.ArrayList; // Agregamos ArrayList para manejar listas vacías
@@ -26,7 +25,6 @@ public class HistorialDeEnvioWS {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<HistorialDeEnvio> obtenerHistorialPorGuia(@PathParam("noGuia") String noGuia) {
-        // DIAGNÓSTICO: Verificamos qué llega al servicio
         System.out.println("--- WS: Solicitud recibida para obtener historial ---");
         System.out.println("Número de guía recibido: " + noGuia);
 
