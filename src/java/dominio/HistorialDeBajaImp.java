@@ -23,7 +23,7 @@ public class HistorialDeBajaImp {
             try {
                 lista = conexionBD.selectList("historialDeBaja.getObtenerHistorialDeBaja");
             } catch (Exception e) {
-                System.err.println("Error al recuperar historial de baja: " + e.getMessage());
+                //System.err.println("Error al recuperar historial de baja: " + e.getMessage());
             } finally {
                 conexionBD.close();
             }
@@ -42,12 +42,12 @@ public class HistorialDeBajaImp {
         try {
             lista = conexionBD.selectOne("historialDeBaja.getHistorialDeBajaPorIdUnidad", idUnidad);
         } catch (Exception e) {
-            System.err.println("Error al recuperar historial de baja por idUnidad: " + e.getMessage());
+            //System.err.println("Error al recuperar historial de baja por idUnidad: " + e.getMessage());
         } finally {
             conexionBD.close();
         }
     } else {
-        System.err.println("No se pudo establecer conexión con la base de datos.");
+        //System.err.println("No se pudo establecer conexión con la base de datos.");
     }
 
     return lista;

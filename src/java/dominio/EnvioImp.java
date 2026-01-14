@@ -26,14 +26,14 @@ public class EnvioImp {
                 // Consulta actualizada en el XML para usar JOINs
                 listaEnvios = conexionBD.selectList("envio.getObtenerEnvios");
             } catch (Exception e) {
-                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+                //System.err.println("Error al recuperar los envíos: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
                 }
             }
         } else {
-            System.err.println(Constantes.MSJ_ERROR_BD);
+            //System.err.println(Constantes.MSJ_ERROR_BD);
         }
 
         return listaEnvios;
@@ -50,7 +50,7 @@ public class EnvioImp {
             try {
                 listaEnvios = conexionBD.selectList("envio.getObtenerEnviosPorNoGuia", noGuia);
             } catch (Exception e) {
-                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+                //System.err.println("Error al recuperar los envíos: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -69,7 +69,6 @@ public class EnvioImp {
 
         if (conexionBD != null) {
             try {
-                // La sentencia INSERT en el XML fue modificada para usar ID de ciudad
                 int resultado = conexionBD.insert("envio.registrar", envio);
                 conexionBD.commit();
 
@@ -174,7 +173,7 @@ public class EnvioImp {
             try {
                 listaEstados = conexionBD.selectList("envio.getObtenerEstadosDeEnvio");
             } catch (Exception e) {
-                System.err.println("Error al recuperar los estados de envíos: " + e.getMessage());
+                //System.err.println("Error al recuperar los estados de envíos: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -195,7 +194,7 @@ public class EnvioImp {
             try {
                 listaEnvios = conexionDB.selectList("envio.getObtenerEnviosConductor", idColaborador);
             } catch (Exception e) {
-                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+                //System.err.println("Error al recuperar los envíos: " + e.getMessage());
 
             } finally {
                 if (conexionDB != null) {
@@ -284,4 +283,33 @@ public class EnvioImp {
         }
         return mensaje;
     }
+    
+    public static Mensaje recalcularCostosTodos() {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conn = MyBatisUtil.obtenerConexion();
+        try {
+            List<Envio> envios = conn.selectList("envio.getObtenerEnvios");
+            for (Envio envio : envios) {
+                List<Paquete> paquetes = conn.selectList("paquete.getPaquetesPorEnvio", envio.getIdEnvio());
+                float costo = CalculadoraCostoWS.calcular(
+                    envio.getOrigenCodigoPostal(),
+                    envio.getDestinoCodigoPostal(),
+                    paquetes.size()
+                );
+                envio.setCostoDeEnvio(costo);
+                conn.update("envio.actualizarCosto", envio);
+            }
+            conn.commit();
+            mensaje.setError(false);
+            mensaje.setMensaje("Costos recalculados para " + envios.size() + " envíos.");
+        } catch (Exception e) {
+            conn.rollback();
+            mensaje.setError(true);
+            mensaje.setMensaje("Error al recalcular costos: " + e.getMessage());
+        } finally {
+            conn.close();
+        }
+        return mensaje;
+    }
+
 }

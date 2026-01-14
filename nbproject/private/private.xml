@@ -2,36 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/LoginImp.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/ColaboradorImp.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/pojo/EstadoUnidad.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/ClienteWS.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/EnvioImp.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/mapper/EstadoMapper.xml</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/ClienteImp.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/web/META-INF/context.xml</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/pojo/Colaborador.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/mapper/ConductorAsignadoMapper.xml</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/mapper/ClienteMapper.xml</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/mapper/ColaboradorMapper.xml</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/LoginWS.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/SucursalWS.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/pojo/Sucursal.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/MyBatisConfig.xml</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/mapper/SucursalMapper.xml</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/ConductorAsignadoWS.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/CiudadWS.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/PaqueteWS.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/mybatis/mapper/EnvioMapper.xml</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/EnvioWS.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/ColaboradorWS.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/dominio/SucursalImp.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/ApplicationConfig.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/pojo/Envio.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/HistorialDeBajaWS.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/ws/Cors.java</file>
-            <file>file:/C:/Users/aldo/OneDrive/Desktop/ITAPI/esqueleto/APIPacketWorld/src/java/pojo/Cliente.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -25,7 +25,7 @@ public class ConductorAsignadoImp {
             try {
                 lista = conexionBD.selectList("conductorAsignado.getAll"); // Mapper como cadena
             } catch (Exception e) {
-                System.err.println("Error al recuperar conductores asignados: " + e.getMessage()); // Mensaje como cadena
+                //System.err.println("Error al recuperar conductores asignados: " + e.getMessage()); // Mensaje como cadena
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();

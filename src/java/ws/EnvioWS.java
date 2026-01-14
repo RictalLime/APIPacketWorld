@@ -149,6 +149,13 @@ public class EnvioWS {
         return EnvioImp.recalcularCostoEnvio(idEnvio);
     }
     
+    @Path("recalcular-costos")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje recalcularCostosTodos() {
+        return EnvioImp.recalcularCostosTodos();
+    }
+    
     // --- MÉTODO DE VALIDACIÓN (MODIFICADO) ---
     
     /**

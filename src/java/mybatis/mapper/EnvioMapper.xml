@@ -86,45 +86,17 @@
         FROM estadoDeEnvio;
     </select>
 
-    <insert id="registrar" parameterType="pojo.Envio">
+    <insert id="registrar" parameterType="pojo.Envio" useGeneratedKeys="true" keyProperty="idEnvio">
         INSERT INTO envio (
-            idCliente,
-            idSucursal,
-            origenCalle,
-            origenNumero,
-            origenColonia,
-            origenCodigoPostal,
-            idOrigenCiudad,
-            idOrigenEstado,
-            destinoCalle,
-            destinoNumero,
-            destinoColonia,
-            destinoCodigoPostal,
-            idDestinoCiudad,
-            idDestinoEstado,
-            noGuia,
-            costoDeEnvio,
-            idEstadoDeEnvio,
-            idColaborador
+            idCliente, idSucursal, origenCalle, origenNumero, origenColonia, origenCodigoPostal,
+            idOrigenCiudad, idOrigenEstado, destinoCalle, destinoNumero, destinoColonia,
+            destinoCodigoPostal, idDestinoCiudad, idDestinoEstado, noGuia, costoDeEnvio,
+            idEstadoDeEnvio, idColaborador
         ) VALUES (
-            #{idCliente},
-            #{idSucursal},
-            #{origenCalle},
-            #{origenNumero},
-            #{origenColonia},
-            #{origenCodigoPostal},
-            #{idOrigenCiudad},
-            #{idOrigenEstado},
-            #{destinoCalle},
-            #{destinoNumero},
-            #{destinoColonia},
-            #{destinoCodigoPostal},
-            #{idDestinoCiudad},
-            #{idDestinoEstado},
-            #{noGuia},
-            #{costoDeEnvio},
-            #{idEstadoDeEnvio},
-            #{idColaborador}
+            #{idCliente}, #{idSucursal}, #{origenCalle}, #{origenNumero}, #{origenColonia}, #{origenCodigoPostal},
+            #{idOrigenCiudad}, #{idOrigenEstado}, #{destinoCalle}, #{destinoNumero}, #{destinoColonia},
+            #{destinoCodigoPostal}, #{idDestinoCiudad}, #{idDestinoEstado}, #{noGuia}, #{costoDeEnvio},
+            #{idEstadoDeEnvio}, #{idColaborador}
         );
     </insert>
 

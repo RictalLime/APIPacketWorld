@@ -20,7 +20,7 @@ public class PaqueteImp {
             try {
                 paquetes = conexionBD.selectList("paquete.getPaquetesPorEnvio", idEnvio);
             } catch (Exception e) {
-                System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
+                //System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -45,7 +45,7 @@ public class PaqueteImp {
             try {
                 paquetes = conexionBD.selectList("paquete.getPaquetes");
             } catch (Exception e) {
-                System.err.println("Error al obtener paquetes: " + e.getMessage());
+                //System.err.println("Error al obtener paquetes: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -70,7 +70,7 @@ public class PaqueteImp {
             try {
                 paquetes = conexionBD.selectList("paquete.getPaquetePorNoGuia", noguia);
             } catch (Exception e) {
-                System.err.println("Error al obtener paquetes por No. Guía: " + e.getMessage());
+                //System.err.println("Error al obtener paquetes por No. Guía: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();

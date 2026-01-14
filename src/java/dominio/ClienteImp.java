@@ -68,7 +68,7 @@ public class ClienteImp {
                 parametros.put("correo", correo);
                 cliente = conexionBD.selectList("cliente.obtenerClientesPorCorreo", parametros);
             } catch (Exception e) {
-                 System.err.println("Error al obtener cliente por correo: " + e.getMessage());
+                 //System.err.println("Error al obtener cliente por correo: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -90,7 +90,7 @@ public class ClienteImp {
                 parametros.put("telefono", telefono);
                 cliente = conexionBD.selectList("cliente.obtenerClientesPorTelefono", parametros);
             } catch (Exception e) {
-                 System.err.println("Error al obtener cliente por teléfono: " + e.getMessage());
+                 //System.err.println("Error al obtener cliente por teléfono: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -208,7 +208,7 @@ public class ClienteImp {
                  errorMsg += e.getMessage();
             }
             respuesta.setMensaje(errorMsg);
-            System.err.println("Excepción al eliminar cliente: " + e.getMessage()); // Imprimir en consola de servidor
+            //System.err.println("Excepción al eliminar cliente: " + e.getMessage()); // Imprimir en consola de servidor
             
         } finally {
             if (conexionBD != null) {

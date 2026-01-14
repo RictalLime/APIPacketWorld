@@ -18,7 +18,7 @@ public class EstadoImp {
             try {
                 listaEstados = conexionBD.selectList("estado.obtenerTodos");
             } catch (Exception e) {
-                System.err.println("Error al recuperar los estados: " + e.getMessage());
+                //System.err.println("Error al recuperar los estados: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -39,7 +39,7 @@ public class EstadoImp {
             try {
                 estado = conexionBD.selectOne("estado.obtenerPorId", idEstado);
             } catch (Exception e) {
-                System.err.println("Error al recuperar el estado por ID: " + e.getMessage());
+                //System.err.println("Error al recuperar el estado por ID: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();

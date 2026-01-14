@@ -27,7 +27,7 @@ public class ColaboradorImp {
             try {
                 listaColaboradores = conexionBD.selectList("colaborador.getColaboradores");
             } catch (Exception e) {
-                System.err.println("Error al recuperar los colaboradores: " + e.getMessage());
+                //System.err.println("Error al recuperar los colaboradores: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -52,7 +52,7 @@ public class ColaboradorImp {
             try {
                 listaColaboradores = conexionBD.selectList("colaborador.getColaboradoresPorNombre", nombre);
             } catch (Exception e) {
-                System.err.println("Error al recuperar los colaboradores por nombre: " + e.getMessage());
+                //System.err.println("Error al recuperar los colaboradores por nombre: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -77,7 +77,7 @@ public class ColaboradorImp {
             try {
                 listaColaboradores = conexionBD.selectList("colaborador.getColaboradoresPorRol", idRol);
             } catch (Exception e) {
-                System.err.println("Error al recuperar los colaboradores por rol: " + e.getMessage());
+                //System.err.println("Error al recuperar los colaboradores por rol: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -100,11 +100,11 @@ public class ColaboradorImp {
 
         if (conexionBD != null) {
             try {
-                System.out.println("Consultando colaborador con noPersonal: " + noPersonal);
+                //System.out.println("Consultando colaborador con noPersonal: " + noPersonal);
                 colaborador = conexionBD.selectList("colaborador.getColaboradorPorNoPersonal", noPersonal);
-                System.out.println("Resultado obtenido: " + colaborador);
+                //System.out.println("Resultado obtenido: " + colaborador);
             } catch (Exception e) {
-                System.err.println("Error al ejecutar la consulta: " + e.getMessage());
+                //System.err.println("Error al ejecutar la consulta: " + e.getMessage());
                 e.printStackTrace();
             } finally {
                 if (conexionBD != null) {
@@ -300,7 +300,7 @@ public class ColaboradorImp {
             try {
                 listaColaboradores = conexionBD.selectList("colaborador.getConductores");
             } catch (Exception e) {
-                System.err.println("Error al recuperar los colaboradores: " + e.getMessage());
+                //System.err.println("Error al recuperar los colaboradores: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -326,7 +326,7 @@ public class ColaboradorImp {
             try {
                 listaColaboradores = conexionBD.selectList("colaborador.getConductoresSinAsignar");
             } catch (Exception e) {
-                System.err.println("Error al recuperar los colaboradores: " + e.getMessage());
+                //System.err.println("Error al recuperar los colaboradores: " + e.getMessage());
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();

@@ -23,12 +23,12 @@ public class HistorialEnvioImp {
             try {
                 lista = conexionBD.selectList("historialDeEnvio.getObtenerHistorialDeEnvio");
             } catch (Exception e) {
-                System.err.println("Error al recuperar historial de envío: " + e.getMessage());
+                //System.err.println("Error al recuperar historial de envío: " + e.getMessage());
             } finally {
                 conexionBD.close();
             }
         } else {
-            System.err.println("Por el momento no se puede consultar la información");
+            //System.err.println("Por el momento no se puede consultar la información");
         }
 
         return lista;
@@ -42,9 +42,9 @@ public class HistorialEnvioImp {
     if (conexionBD != null) {
         try {
             lista = conexionBD.selectList("historialDeEnvio.getHistorialDeEnvioPorNoGuia", noGuia);
-            System.out.println("Registros obtenidos: " + (lista != null ? lista.size() : "null"));
+            //System.out.println("Registros obtenidos: " + (lista != null ? lista.size() : "null"));
         } catch (Exception e) {
-            System.err.println("Error al obtener historial de envío por noGuia: " + e.getMessage());
+            //System.err.println("Error al obtener historial de envío por noGuia: " + e.getMessage());
         } finally {
             conexionBD.close();
         }
